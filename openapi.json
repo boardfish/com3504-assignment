@@ -1,5 +1,6 @@
 {
    "openapi": "3.0.2",
+   "servers": [{ "url": "http://localhost:4000/" }],
    "info": {
       "description": "This specification guides the creation of the endpoints necessary for this\ngroup's implementation of the COM3504 assignment.\n",
       "version": "1.0.0",
