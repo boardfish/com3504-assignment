@@ -44,8 +44,7 @@
             "description": "",
             "operationId": "addStory",
             "requestBody": {
-               "$ref": "#/components/requestBodies/Story",
-               "type": "object"
+               "$ref": "#/components/requestBodies/Story"
             },
             "responses": {
                "201": {

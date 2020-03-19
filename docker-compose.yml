@@ -7,5 +7,14 @@ services:
       - MONGO_CONNECTION_STRING="mongodb://db:27017/development"
     ports:
       - "3000:3000"
+  stub:
+    build:
+      context: 'out/ruby'
+    volumes: 
+      - ${PWD}/out/ruby:/local
+    working_dir: '/local'
+    ports:
+      - "4000:4000"
+
   db:
     image: 'mongo'
