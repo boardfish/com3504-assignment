@@ -10,7 +10,7 @@ var Post = new Schema(
     image2: {type: String},
     image3: {type: String},
     image4: {type: String},
-    text: {type: String}
+    text: {type: String, max: 200}
   }
 );
 
