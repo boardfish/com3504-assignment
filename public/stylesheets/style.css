@@ -1,8 +1,29 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-a {
-  color: #00B7FF;
+main {
+  flex-grow: 1;
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-avatar {
+  height: 32px;
+  width: auto;
+  transition: 0.2s height ease-out;
+  border-radius: 50%;
+}
+
+.user-profile:hover {
+  text-decoration: none;
+}
+.user-profile:hover .user-avatar {
+  height: 40px;
 }
