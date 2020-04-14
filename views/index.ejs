@@ -1,7 +1,7 @@
 <%- include("layouts/head") %>
 <h1><%= title %></h1>
 <p>Welcome to <%= title %></p>
-<%- include("profile",{username: "blah", nickname: "Blah", id: 1}) %>
-<%- include("profile",{username: "foo", nickname: "Foo", id: 2}) %>
-<%- include("profile",{username: "boardfish_", nickname: "Simon Fish", id: 3}) %>
+<%- include("components/profile",{username: "blah", nickname: "Blah", id: 1}) %>
+<%- include("components/profile",{username: "foo", nickname: "Foo", id: 2}) %>
+<%- include("components/profile",{username: "boardfish_", nickname: "Simon Fish", id: 3}) %>
 <%- include("layouts/foot") %>
