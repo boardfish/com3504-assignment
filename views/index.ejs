@@ -4,4 +4,10 @@
 <%- include("components/profile",{username: "blah", nickname: "Blah", id: 1}) %>
 <%- include("components/profile",{username: "foo", nickname: "Foo", id: 2}) %>
 <%- include("components/profile",{username: "boardfish_", nickname: "Simon Fish", id: 3}) %>
+<%- include("components/likes",{ratings: [8, 2, 4, 5, 6]}) %>
+<%- include("components/likes",{ratings: [0, 2, 4, 5, 6]}) %>
+<%- include("components/likes",{ratings: [8, 0, 4, 5, 6]}) %>
+<%- include("components/likes",{ratings: [8, 2, 0, 5, 6]}) %>
+<%- include("components/likes",{ratings: [8, 2, 4, 0, 6]}) %>
+<%- include("components/likes",{ratings: [8, 2, 4, 5, 0]}) %>
 <%- include("layouts/foot") %>
