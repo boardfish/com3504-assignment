@@ -1,4 +1,4 @@
-<div class="progress">
+<div class="progress <%= html_class %>">
   <% 
   ratings
     .map((rating) => (rating / ratings.reduce((a, b) => a + b, 0)))
