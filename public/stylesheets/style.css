@@ -27,3 +27,9 @@ main {
 .user-profile:hover .user-avatar {
   height: 40px;
 }
+
+.progress {
+  height: 2rem;
+  font-size: 1rem;
+  letter-spacing: -2px;
+}
