@@ -1,6 +1,6 @@
 <div class="d-flex">
-  <% Array(5).fill('★').forEach(star => { %>
-    <span class="fivestars">
+  <% Array(5).fill('★').forEach((star, index) => { %>
+    <span class="fivestars" data-post-id="<%= postId %>" data-value="<%= index + 1 %>">
       <%= star %>
     </span>
   <% }) %>
