@@ -1,3 +1,13 @@
+$theme-colors: (
+  "1-star": rgb(244, 67, 54),
+  "2-star": rgb(255, 87, 34),
+  "3-star": rgb(255, 193, 7),
+  "4-star": rgb(139, 195, 74),
+  "5-star": #00AA55,
+);
+
+@import './node_modules/bootstrap/scss/bootstrap.scss';
+
 body {
   min-height: 100vh;
   display: flex;

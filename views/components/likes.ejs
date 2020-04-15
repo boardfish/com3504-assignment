@@ -3,18 +3,17 @@
   ratings
     .map((rating) => (rating / ratings.reduce((a, b) => a + b, 0)))
     .map((rating) => (Math.round(rating * 100)))
-    .map((rating,index) => [rating, ['danger','dark','warning','info','success'][index]])
-    .map((rating,index) => [...rating, (index + 1)])
+    .map((rating,index) => [rating, (index + 1)])
     .forEach((rating, index) => { %>
   <% if (rating[0] > 0) { %>
   <div
-    class="progress-bar bg-<%= rating[1] %>"
+    class="progress-bar bg-<%= rating[1] %>-star"
     role="progressbar"
     style="width: <%= rating[0] %>%;"
     aria-valuenow="<%= rating[0] %>"
     aria-valuemin="0"
     aria-valuemax="<%= rating[0] %>">
-    <%= Array(rating[2]).fill('★').join('') %>
+    <%= Array(rating[1]).fill('★').join('') %>
     <%= " " %>× <%= ratings[index] %>
   </div>
   <% } %>

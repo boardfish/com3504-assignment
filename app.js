@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+var sass = require('node-sass-middleware');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,6 +19,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/node_modules/bootstrap/dist')));
+
+ app.use(
+     sass({
+         src: __dirname + '/sass',    // Input SASS files
+         dest: __dirname + '/public', // Output CSS
+         debug: true                
+     })
+ );
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
