@@ -22,6 +22,14 @@ class OpenAPIing < Sinatra::Base
   attr_accessor :configuration
 
   def self.configure
+    options "*" do
+      response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+      response.headers["Access-Control-Allow-Methods"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+      response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+      response.headers["Access-Control-Max-Age"] = "86400"
+      200
+    end
+
     get("/resources" + @@configuration.format_specifier) {
       cross_origin
       OpenAPIing.to_resource_listing
