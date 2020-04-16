@@ -1,15 +1,22 @@
 <%- include("layouts/head") %>
 <h1><%= title %></h1>
 <p>Welcome to <%= title %></p>
-<%- include("components/profile",{username: "blah", nickname: "Blah", id: 1}) %>
-<%- include("components/profile",{username: "foo", nickname: "Foo", id: 2}) %>
-<%- include("components/profile",{username: "boardfish_", nickname: "Simon Fish", id: 3}) %>
-<%- include("components/likes",{ratings: [8, 2, 4, 5, 6], html_class: "my-2"}) %>
-<%- include("components/likes",{ratings: [0, 2, 4, 5, 6], html_class: "my-2"}) %>
-<%- include("components/likes",{ratings: [8, 0, 4, 5, 6], html_class: "my-2"}) %>
-<%- include("components/likes",{ratings: [8, 2, 0, 5, 6], html_class: "my-2"}) %>
-<%- include("components/likes",{ratings: [8, 2, 4, 0, 6], html_class: "my-2"}) %>
-<%- include("components/likes",{ratings: [8, 2, 4, 5, 0], html_class: "my-2"}) %>
-<%- include("components/likeButton", {postId: 1}) %>
-<%- include("components/likeButton", {postId: 2}) %>
+<%- include("components/post",{
+  user: {
+    username: 'boardfish_',
+    nickname: 'Simon Fish',
+    id: 3
+  },
+  post: {
+    id: 1,
+    text: 'Hello world, hello world.',
+    photos: [
+      'https://placehold.it/300',
+      'https://placehold.it/300',
+      'https://placehold.it/300',
+      'https://placehold.it/300'
+    ],
+    ratings: [2, 4, 6, 0, 8]
+  }
+}) %>
 <%- include("layouts/foot") %>
