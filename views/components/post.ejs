@@ -12,6 +12,6 @@
   </div>
   <div class="card-footer d-flex align-items-center w-100">
     <%- include("likes",{ ratings: post.ratings, html_class: 'flex-grow-1 mr-2' }) %>
-    <%- include("likeButton", { postId: post.id }) %>
+    <%- include("likeButton", { postId: post.id, rating: 2 }) %>
   </div>
 </div>
