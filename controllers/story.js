@@ -46,6 +46,31 @@ exports.insert = function (req, res) {
 
 };
 
-exports.getAll = function(req, res){
-  storyArrayModel.find();
-}
+exports.getStory = function (req, res) {
+  var userData = req.body;
+  if (userData == null) {
+    res.status(403).send('No data sent!')
+  }
+  try {
+    Story.find({storyId: userData.story_id}, 'userId text likes',
+      function (err, stories) {
+        if (err)
+          res.status(500).send('Invalid data!');
+        var story = null;
+        if (story.length > 0) {
+          var storyData = story[0];
+          story = {
+            userID: storyData.user_id, text: storyData.text,
+            likes: storyData.likes
+          };
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(story));
+
+      })
+  } catch (e) {
+    res.status(500).send('error' + e);
+  }
+};
+
+
