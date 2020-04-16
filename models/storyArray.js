@@ -10,3 +10,7 @@ const StoryArray = new Schema[(
     likes: {type: Array}
   }
 )];
+
+const storyArrayModel = mongoose.model('Story Arrays', StoryArray);
+
+module.exports = storyArrayModel;

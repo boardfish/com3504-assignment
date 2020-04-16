@@ -45,3 +45,7 @@ exports.insert = function (req, res) {
   }
 
 };
+
+exports.getAll = function(req, res){
+  storyArrayModel.find();
+}
