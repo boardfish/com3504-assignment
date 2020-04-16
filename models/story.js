@@ -4,13 +4,10 @@ var Schema = mongoose.Schema;
 
 var Post = new Schema(
   {
-    user_id: {type: Number, required: true},
-    imageNo: {type: Number, required: true, max:4},
-    image1: {type: String},
-    image2: {type: String},
-    image3: {type: String},
-    image4: {type: String},
-    text: {type: String, max: 200}
+    storyId: {type:Number, required: true},
+    userId: {type: Number, required: true},
+    text: {type: String, max: 200},
+    likes: {type:Array}
   }
 );
 

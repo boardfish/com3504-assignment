@@ -57,7 +57,7 @@ exports.getStory = function (req, res) {
         if (err)
           res.status(500).send('Invalid data!');
         var story = null;
-        if (story.length > 0) {
+        if (stories.length > 0) {
           var storyData = story[0];
           story = {
             userID: storyData.user_id, text: storyData.text,
@@ -73,4 +73,22 @@ exports.getStory = function (req, res) {
   }
 };
 
+exports.getAllUserStories = function (req, res) {
+  var data = req.body;
+  if (userData == null) {
+    res.status(403).send('No data sent')
+  }
+  try {
+    Story.find({userId: userData.user_id}, 'text likes',
+      function (err, stories) {
+        if (err)
+          res.status(500).send('Invalid data!');
+        var story = null;
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(stories));
+      });
+  } catch (e) {
+    res.status(500).send('error ' + e);
+  };
+};
 
