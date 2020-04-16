@@ -4,7 +4,7 @@ var navbar = require("../views/data/navbar.json")
 
 var users = require('../controllers/users');
 var likes = require('../controllers/likes');
-var posts = require('../controllers/posts');
+var posts = require('../controllers/story');
 
 
 /* GET home page. */

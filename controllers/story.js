@@ -1,4 +1,4 @@
-var Posts = require('../models/posts');
+var Story = require('../models/story');
 
 exports.insert = function (req, res) {
   var postData = req.body;
@@ -24,7 +24,7 @@ exports.insert = function (req, res) {
   }
 
   try {
-    var post = new Posts({
+    var post = new Story({
       user_id: postData.id,
       imageNo: number,
       text: postData.text

@@ -8,9 +8,8 @@ exports.insert = function (req, res) {
   try{
     var like = new Likes({
       like_id: likeData.likeid,
-      user_id: likeData.userid,
-      user_post: likeData.userPost,
-      like_value: likeData.likevalue
+      story_id: likeData.userPost,
+      vote: likeData.likevalue
     });
     console.log('received: ' + like);
 
@@ -25,4 +24,4 @@ exports.insert = function (req, res) {
   } catch (e) {
     res.status(500).send('error' + e);
   }
-}
+};
