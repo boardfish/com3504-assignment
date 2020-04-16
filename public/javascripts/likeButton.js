@@ -21,8 +21,8 @@ const submitLike = (storyId, vote) => {
       alert("Error");
     },
     () => {
-      $(`span.fivestars[data-post-id=${storyId}]`).css('color', 'black')
-      $(`span.fivestars[data-post-id=${storyId}]:nth-child(-n+${vote})`).css('color', 'red')
+      $(`span.fivestars[data-post-id=${storyId}]`).removeClass(Array(5).fill().map((_, i) => `text-${i+1}-star`).join(' '))
+      $(`span.fivestars[data-post-id=${storyId}]:nth-child(-n+${vote})`).addClass(`text-${vote}-star`)
       $(`span.fivestars[data-post-id=${storyId}]`).removeClass('selected')
       $(`span.fivestars[data-post-id=${storyId}]:nth-child(${vote})`).addClass('selected')
     }
