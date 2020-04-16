@@ -23,6 +23,8 @@ const submitLike = (storyId, vote) => {
     () => {
       $(`span.fivestars[data-post-id=${storyId}]`).css('color', 'black')
       $(`span.fivestars[data-post-id=${storyId}]:nth-child(-n+${vote})`).css('color', 'red')
+      $(`span.fivestars[data-post-id=${storyId}]`).removeClass('selected')
+      $(`span.fivestars[data-post-id=${storyId}]:nth-child(${vote})`).addClass('selected')
     }
   );
 };

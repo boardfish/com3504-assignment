@@ -47,3 +47,20 @@ main {
     align-items: center;
   }
 }
+
+.fivestars-group {
+  display: flex;
+}
+.fivestars.selected {
+  display: block;
+  animation: highlight-grow .4s cubic-bezier(.22,.61,.36,1);
+}
+
+@keyframes highlight-grow {
+  0%, 100% {
+    transform: translateY(0px) rotateY(0);
+  }
+  50% {
+    transform: translateY(-5px) rotateY(180deg);
+  }
+}
