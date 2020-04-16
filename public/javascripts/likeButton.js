@@ -21,8 +21,8 @@ const submitLike = (storyId, vote) => {
       alert("Error");
     },
     () => {
-      $(`span.fivestars`).css('color', 'black')
-      $(`span.fivestars:nth-child(-n+${vote})`).css('color', 'red')
+      $(`span.fivestars[data-post-id=${storyId}]`).css('color', 'black')
+      $(`span.fivestars[data-post-id=${storyId}]:nth-child(-n+${vote})`).css('color', 'red')
     }
   );
 };
