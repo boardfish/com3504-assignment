@@ -1,0 +1,77 @@
+$theme-colors: (
+  "1-star": rgb(244, 67, 54),
+  "2-star": rgb(255, 87, 34),
+  "3-star": rgb(255, 193, 7),
+  "4-star": rgb(139, 195, 74),
+  "5-star": #00AA55,
+);
+
+@import './node_modules/bootstrap/scss/bootstrap.scss';
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-avatar {
+  height: 32px;
+  width: auto;
+  transition: 0.2s height ease-out;
+  border-radius: 50%;
+}
+
+.user-profile:hover {
+  text-decoration: none;
+}
+.user-profile:hover .user-avatar {
+  height: 40px;
+}
+
+.progress {
+  height: 2rem;
+  font-size: 1rem;
+  letter-spacing: -2px;
+  .progress-bar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.fivestars-group {
+  display: flex;
+}
+.fivestars.selected {
+  display: block;
+  animation: highlight-grow .4s cubic-bezier(.22,.61,.36,1);
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  justify-items: center;
+  align-items: center;
+  max-height: 50vh;
+}
+
+@keyframes highlight-grow {
+  0%, 100% {
+    transform: translateY(0px) rotateY(0);
+  }
+  50% {
+    transform: translateY(-5px) rotateY(180deg);
+  }
+}

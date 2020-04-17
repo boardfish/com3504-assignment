@@ -1,0 +1,7 @@
+<div class="fivestars-group" class="d-flex align-items-center">
+  <% Array(5).fill('★').forEach((star, index) => { %>
+    <span class="fivestars <%= index < rating ? `text-${rating}-star` : '' %>" data-post-id="<%= postId %>" data-value="<%= index + 1 %>">
+      <%= star %>
+    </span>
+  <% }) %>
+</div>
