@@ -67,9 +67,13 @@ exports.getAllUserStories = function (req, res) {
           res.status(500).send('Invalid data!');
         var story = null;
         if (stories.length > 0) {
-          var firstElem = stories[0]
+          stories = [stories]
         }
-      })
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(stories))
+      });
+  } catch (e) {
+    res.status(500).send('error ' + e);
   }
-}
+};
 

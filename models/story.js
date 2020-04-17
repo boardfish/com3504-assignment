@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var Post = new Schema(
   {
     storyId: {type:Number, required: true},
-    userId: {type: Number, required: true},
+    userId: {type: Schema.Types.ObjectID, ref: 'User', required: true},
     text: {type: String, max: 200},
     likes: {type:Array}
   }
