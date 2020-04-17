@@ -5,29 +5,11 @@ exports.insert = function (req, res) {
   if (postData == null) {
     res.status(403).send('No Data sent');
   }
-  var number;
-  switch(postData){
-    case (postData.image1 == null):
-      number = 0;
-      break;
-    case (postData.image2 == null):
-      number = 1;
-      break;
-    case (postData.image3 == null):
-      number = 2;
-      break;
-    case (postData.image4 == null):
-      number = 3;
-      break;
-    default:
-      number = 4;
-  }
-
   try {
     var post = new Story({
       user_id: postData.id,
-      imageNo: number,
-      text: postData.text
+      text: postData.text,
+      likes: postData.likes
     });
     console.log('received: ' + post);
 
@@ -75,20 +57,19 @@ exports.getStory = function (req, res) {
 
 exports.getAllUserStories = function (req, res) {
   var data = req.body;
-  if (userData == null) {
+  if (data == null) {
     res.status(403).send('No data sent')
   }
   try {
-    Story.find({userId: userData.user_id}, 'text likes',
+    Story.find({userId: data.user_id}, 'text likes',
       function (err, stories) {
         if (err)
           res.status(500).send('Invalid data!');
         var story = null;
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(stories));
-      });
-  } catch (e) {
-    res.status(500).send('error ' + e);
-  };
-};
+        if (stories.length > 0) {
+          var firstElem = stories[0]
+        }
+      })
+  }
+}
 
