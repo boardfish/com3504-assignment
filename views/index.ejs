@@ -1,6 +1,5 @@
 <%- include("layouts/head") %>
-<h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
+<%- include("components/newPost") %>
 <% stories.forEach(story => { %>
   <%- include("components/story",{
     user: story.user,
