@@ -8,7 +8,7 @@ exports.insert = function (req, res) {
   }
   try {
     var story = new Story({
-      userId: storyData.userId,
+      user: storyData.user,
       text: storyData.text,
       likes: storyData.likes
     });
@@ -74,7 +74,8 @@ exports.getAllUserStories = function (req, res) {
         stories = [stories]
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(stories))
-      });
+      }
+    );
   } catch (e) {
     res.status(500).send('error ' + e);
   }
@@ -83,7 +84,7 @@ exports.getAllUserStories = function (req, res) {
 
 exports.getAllStories = function (req, res) {
   try {
-    Story.find({}, 'text likes',
+    Story.find({}, 'text likes').populate('user').exec(
       function (err, stories) {
         if (err) {
           res.status(500).render("error", { error: {status: 500, stack: ''}, message: JSON.stringify(err) })
