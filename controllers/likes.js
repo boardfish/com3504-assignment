@@ -1,27 +1,24 @@
-var Likes = require('../models/likes');
+var Like = require("../models/likes");
+var Story = require("../models/story")
+var utils = require("./utils");
 
 exports.insert = function (req, res) {
-  var likeData = req.body;
-  if (likeData == null) {
-    res.status(403).send('No Data Sent!')
-  }
-  try{
-    var like = new Likes({
-      like_id: likeData.likeid,
-      story_id: likeData.userPost,
-      vote: likeData.likevalue
-    });
-    console.log('received: ' + like);
-
-    like.save(function(err, results) {
-      console.log(results._id);
-      if (err)
-        res.status(500).send('invalid data!');
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(character));
-    });
-
-  } catch (e) {
-    res.status(500).send('error' + e);
-  }
+  var like = new Like({
+    story: req.params.storyId,
+    vote: req.params.vote,
+  });
+  console.log("received: " + like);
+  like.save(function (err, like) {
+    if (err) {
+      utils.render(req, res, "friendly-error", 200, err, like, {});
+      return;
+    }
+    Story.findByIdAndUpdate(
+        like.story, 
+        { $push: { likes: like } },
+        function(err, _story) {
+          utils.render(req, res, "friendly-error", 200, err, like, {});
+        }
+    );
+  });
 };

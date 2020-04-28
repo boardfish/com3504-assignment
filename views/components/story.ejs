@@ -11,7 +11,8 @@
     </div>
   </div>
   <div class="card-footer d-flex align-items-center w-100">
-    <%- include("likes",{ ratings: story.ratings, html_class: 'flex-grow-1 mr-2' }) %>
+    <%- include("likes",{ ratings: story.likes.reduce((a, v) => { a[v.vote] += 1; return a }, [0, 0, 0, 0, 0])
+, html_class: 'flex-grow-1 mr-2' }) %>
     <%- include("likeButton", { storyId: story._id, rating: 2 }) %>
   </div>
 </div>

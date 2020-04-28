@@ -1,5 +1,6 @@
-<%- include("layouts/head") %>
-<h1>There was an error!</h1>
-<p><%= status %></p>
-<%= error %>
-<%- include("layouts/foot") %>
+<h1>Error</h1>
+<%= message %>
+<%= error.status %>
+<pre>
+  <%= error.stack %>
+</pre>
