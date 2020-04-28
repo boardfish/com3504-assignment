@@ -23,6 +23,15 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
+ * Create Socket.io server
+ */
+
+var io = require('socket.io')
+  .listen(server, {pingTimeout: 60000});
+var socket_module = require('../socket.io/socket-io');
+socket_module.init(io, app);
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 
