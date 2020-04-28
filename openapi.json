@@ -210,9 +210,9 @@
                   "type": "integer",
                   "format": "int64"
                },
-               "userId": {
-                  "type": "integer",
-                  "format": "int64"
+               "user": {
+                  "type": "string",
+                  "description": "User's ID in the database (populated on GET)"
                },
                "text": {
                   "type": "string",
