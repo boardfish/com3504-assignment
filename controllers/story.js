@@ -1,4 +1,5 @@
 var Story = require('../models/story');
+var User = require('../models/users');
 var utils = require("./utils")
 
 exports.insert = function (req, res) {
@@ -59,28 +60,25 @@ exports.getStory = function (req, res) {
 };
 
 exports.getAllUserStories = function (req, res) {
-  var data = req.body;
-  if (data == null) {
-    res.status(403).send('No data sent')
-    return;
-  }
   try {
-    Story.find({userId: data.user_id}, 'text likes',
-      function (err, stories) {
-        if (err) {
-          res.status(500).send('Invalid data!');
-          return;
-        }
-        stories = [stories]
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(stories))
+    User.findById(req.params.userId, (err, user) => {
+      // If an invalid ID is passed...
+      if ((err || {}).name === "CastError") {
+        utils.render(req, res, "error", 'We couldn\'t find a user with that ID.', {}, {})
+      // ...or a user with the valid ID doesn't exist
+      } else if (user === null) {
+        utils.render(req, res, "error", 'We couldn\'t find a user with that ID.', {}, {})
       }
-    );
+      Story.find({user: req.params.userId}, 'text likes').populate('user').exec(
+        function (err, stories) {
+          utils.render(req, res, "index", err, stories, { stories: stories })
+        });
+    })
   } catch (e) {
     res.status(500).send('error ' + e);
+    return;
   }
 };
-
 
 exports.getAllStories = function (req, res) {
   try {

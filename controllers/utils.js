@@ -14,6 +14,9 @@ const renderHtml = (req, res, viewName, err, data) => {
     res.status(500).render("error", {
       error: { status: 500, stack: "" },
       message: JSON.stringify(err),
+      title: "There was an error.",
+      path: req.path,
+      navbar: navbar
     });
     return;
   }
