@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var stories = require('../controllers/story');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/:userId/stories', stories.getAllUserStories)
 
 module.exports = router;
