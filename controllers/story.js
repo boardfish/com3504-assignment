@@ -64,14 +64,14 @@ exports.getAllUserStories = function (req, res) {
     User.findById(req.params.userId, (err, user) => {
       // If an invalid ID is passed...
       if ((err || {}).name === "CastError") {
-        utils.render(req, res, "error", 'We couldn\'t find a user with that ID.', {}, {})
+        utils.render(req, res, "error", 404, 'We couldn\'t find a user with that ID.', {}, {})
       // ...or a user with the valid ID doesn't exist
       } else if (user === null) {
-        utils.render(req, res, "error", 'We couldn\'t find a user with that ID.', {}, {})
+        utils.render(req, res, "error", 404, 'We couldn\'t find a user with that ID.', {}, {})
       }
       Story.find({user: req.params.userId}, 'text likes').populate('user').exec(
         function (err, stories) {
-          utils.render(req, res, "index", err, stories, { stories: stories })
+          utils.render(req, res, "index", 200, err, stories, { stories: stories })
         });
     })
   } catch (e) {
@@ -84,7 +84,7 @@ exports.getAllStories = function (req, res) {
   try {
     Story.find({}, 'text likes').populate('user').exec(
       function (err, stories) {
-        utils.render(req, res, "index", err, stories, { stories: stories })
+        utils.render(req, res, "index", 200, err, stories, { stories: stories })
       });
   } catch (e) {
     res.status(500).send('error ' + e);

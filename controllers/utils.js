@@ -1,6 +1,10 @@
 var navbar = require("../views/data/navbar.json")
 
-exports.render = (req, res, viewName, err, jsonData, htmlData) => {
+exports.render = (req, res, viewName, status, err, jsonData, htmlData) => {
+  if (err) {
+    renderError(req, res, (status === 200 ? 500 : status), err)
+    return;
+  }
   switch (req.header('Content-Type')) {
     case 'application/json':
       return renderJson(res, err, jsonData)
@@ -9,17 +13,27 @@ exports.render = (req, res, viewName, err, jsonData, htmlData) => {
   }
 };
 
-const renderHtml = (req, res, viewName, err, data) => {
-  if (err) {
-    res.status(500).render("error", {
-      error: { status: 500, stack: "" },
-      message: JSON.stringify(err),
-      title: "There was an error.",
-      path: req.path,
-      navbar: navbar
-    });
-    return;
+const renderError = (req, res, status, err) => {
+  if (!(typeof err === 'string' || err instanceof String)) {
+    err = JSON.stringify(err)
   }
+  switch (req.header('Content-Type')) {
+    case 'application/json':
+      res.status(status || 500).send(JSON.stringify({ error: err }));
+      return;
+    default:
+      res.status(status || 500).render("error", {
+        error: err,
+        status: status,
+        title: "Oops!",
+        path: req.path,
+        navbar: navbar
+      });
+      return;
+  }
+}
+
+const renderHtml = (req, res, viewName, err, data) => {
   res.render(viewName, {
     title: "Express",
     path: req.path,
@@ -29,9 +43,5 @@ const renderHtml = (req, res, viewName, err, data) => {
 };
 
 const renderJson = (res, err, data) => {
-  if (err) {
-    res.status(500).send(JSON.stringify({ error: err }));
-    return;
-  }
   res.send(data);
 };
