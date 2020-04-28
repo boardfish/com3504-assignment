@@ -7,9 +7,8 @@ var likes = require('../controllers/likes');
 var posts = require('../controllers/story');
 
 
+var Story = require('../models/story');
 /* GET home page. */
-router.get("/", function(req, res, next) {
-  res.render("index", { title: "Express", path: req.path, navbar: navbar })
-});
+router.get("/", posts.getAllStories);
 
 module.exports = router;
