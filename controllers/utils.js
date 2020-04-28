@@ -22,7 +22,7 @@ const renderError = (req, res, status, err) => {
       res.status(status || 500).send(JSON.stringify({ error: err }));
       return;
     default:
-      res.status(status || 500).render("error", {
+      res.status(status || 500).render("friendly-error", {
         error: err,
         status: status,
         title: "Oops!",

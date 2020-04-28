@@ -236,7 +236,7 @@
          "Like": {
             "type": "object",
             "properties": {
-               "storyId": {
+               "story": {
                   "type": "integer",
                   "format": "int64"
                },
