@@ -11,5 +11,6 @@ var Story = require('../models/story');
 /* GET home page. */
 router.get("/", stories.getAllStories);
 router.post("/stories", stories.insert);
+router.post("/users", users.insert);
 
 module.exports = router;

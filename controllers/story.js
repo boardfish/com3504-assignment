@@ -8,7 +8,7 @@ exports.insert = function (req, res) {
   }
   try {
     var story = new Story({
-      user_id: storyData.id,
+      userId: storyData.userId,
       text: storyData.text,
       likes: storyData.likes
     });
@@ -21,7 +21,6 @@ exports.insert = function (req, res) {
         res.status(500).send('Invalid data!');
         return;
       }
-
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(story));
     });

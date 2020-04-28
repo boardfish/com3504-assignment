@@ -15,13 +15,14 @@ exports.insert = function (req, res) {
 
     console.log('received + ' + user);
 
-    user.save(function (err, results) {
-      console.log(results._id);
-      if (err)
+    user.save(function (err, user) {
+      console.log(user._id);
+      if (err) {
         res.status(500).send('Invalid data!');
-
-      res.setHeader('Content-Type', 'application.json');
-      res.send(JSON.stringify(character));
+        return;
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(user));
     });
   } catch (e) {
     res.status(500).send('error' + e);
