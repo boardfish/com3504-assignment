@@ -1,5 +1,5 @@
 var Story = require('../models/story');
-var navbar = require("../views/data/navbar.json")
+var utils = require("./utils")
 
 exports.insert = function (req, res) {
   var storyData = req.body;
@@ -86,11 +86,7 @@ exports.getAllStories = function (req, res) {
   try {
     Story.find({}, 'text likes').populate('user').exec(
       function (err, stories) {
-        if (err) {
-          res.status(500).render("error", { error: {status: 500, stack: ''}, message: JSON.stringify(err) })
-          return;
-        }
-        res.render("index", { title: "Express", path: req.path, navbar: navbar, stories: stories, err: err })
+        utils.render(req, res, "index", err, stories, { stories: stories })
       });
   } catch (e) {
     res.status(500).send('error ' + e);
