@@ -2,15 +2,14 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var Post = new Schema(
+var Story = new Schema(
   {
-    storyId: {type:Number, required: true},
-    userId: {type: Schema.Types.ObjectID, ref: 'User', required: true},
+    user: {type: Schema.Types.ObjectID, ref: 'User', required: true},
     text: {type: String, max: 200},
     likes: {type:Array}
   }
 );
 
-const postModel = mongoose.model('Post', Post);
+const storyModel = mongoose.model('Story', Story);
 
-module.exports = postModel;
+module.exports = storyModel;

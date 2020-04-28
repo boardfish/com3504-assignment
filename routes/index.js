@@ -4,11 +4,13 @@ var navbar = require("../views/data/navbar.json")
 
 var users = require('../controllers/users');
 var likes = require('../controllers/likes');
-var posts = require('../controllers/story');
+var stories = require('../controllers/story');
 
 
 var Story = require('../models/story');
 /* GET home page. */
-router.get("/", posts.getAllStories);
+router.get("/", stories.getAllStories);
+router.post("/stories", stories.insert);
+router.post("/users", users.insert);
 
 module.exports = router;

@@ -2,25 +2,27 @@ var Story = require('../models/story');
 var navbar = require("../views/data/navbar.json")
 
 exports.insert = function (req, res) {
-  var postData = req.body;
-  if (postData == null) {
+  var storyData = req.body;
+  if (storyData == null) {
     res.status(403).send('No Data sent');
   }
   try {
-    var post = new Story({
-      user_id: postData.id,
-      text: postData.text,
-      likes: postData.likes
+    var story = new Story({
+      user: storyData.user,
+      text: storyData.text,
+      likes: storyData.likes
     });
-    console.log('received: ' + post);
+    console.log('received: ' + story);
 
-    post.save(function (err, results) {
-      console.log(results._id);
-      if (err)
+    story.save(function (err, results) {
+      // console.log(results._id);
+      if (err) {
+        console.log(err)
         res.status(500).send('Invalid data!');
-
+        return;
+      }
       res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(post));
+      res.send(JSON.stringify(story));
     });
 
   } catch (e) {
@@ -72,7 +74,8 @@ exports.getAllUserStories = function (req, res) {
         stories = [stories]
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(stories))
-      });
+      }
+    );
   } catch (e) {
     res.status(500).send('error ' + e);
   }
@@ -81,7 +84,7 @@ exports.getAllUserStories = function (req, res) {
 
 exports.getAllStories = function (req, res) {
   try {
-    Story.find({}, 'text likes',
+    Story.find({}, 'text likes').populate('user').exec(
       function (err, stories) {
         if (err) {
           res.status(500).render("error", { error: {status: 500, stack: ''}, message: JSON.stringify(err) })
