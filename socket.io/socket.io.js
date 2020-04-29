@@ -11,26 +11,8 @@ exports.init = function (io, app){
       socket.on('acuityClick', function (id) {
         socket.broadcast.emit('acuityClick', id);
       });
-
-      socket.on('disconnect', function(){
-        console.log('User disconnected');
-      });
     } catch (err){
       err.print();
     }
   })
-};
-exports.joinRoom = function (io, app) {
-  console.log("JOINING ROOM");
-  io.on('connection', function (socket) {
-    socket.on('joining', function (userId, roomId) {
-      socket.join(roomId);
-      console.log("ROOM ID IS " + roomId);
-      socket.to(roomId).emit('updatechat', socket.username + 'has joined this room', '');
-
-    });
-    socket.on('sendchat', function (data) {
-      io.sockets.in(socket.room).emit('updatechat', socket.username, data);
-    });
-  });
 };
