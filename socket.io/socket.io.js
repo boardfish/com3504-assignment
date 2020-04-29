@@ -1,6 +1,9 @@
 exports.init = function (io, app){
+  console.log('Socket.io is connected');
   io.sockets.on('connection', function (socket) {
+    console.log("This bit is working");
     try {
+
       socket.on('custom-message', function (message, parameter) {
         socket.broadcast.emit('custom-message', message, parameter);
       });
