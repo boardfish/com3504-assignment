@@ -4,7 +4,9 @@ var utils = require("./utils");
 
 const consolidateRatings = (ratings) => {
   var consolidatedRatings = Array(5).fill(0);
-  ratings.map((like) => like.vote).forEach((x) => consolidatedRatings[x] += 1)
+  ratings
+    .map((like) => like.vote)
+    .forEach((x) => (consolidatedRatings[x] += 1));
   return consolidatedRatings;
 };
 
@@ -37,28 +39,16 @@ exports.insert = function (req, res) {
 };
 
 exports.getStory = function (req, res) {
-  var userData = req.body;
-  if (userData == null) {
-    res.status(403).send("No data sent!");
-  }
   try {
-    Story.find({ storyId: userData.story_id }, "userId text likes", function (
-      err,
-      stories
-    ) {
-      if (err) res.status(500).send("Invalid data!");
-      var story = null;
-      if (stories.length > 0) {
-        var storyData = story[0];
-        story = {
-          userID: storyData.user_id,
-          text: storyData.text,
-          likes: storyData.likes,
-        };
-      }
-      res.setHeader("Content-Type", "application/json");
-      res.send(JSON.stringify(story));
-    });
+    Story.findById(req.params.storyId, "userId text likes")
+      .populate("user")
+      .populate({ path: "likes", select: "vote -_id" })
+      .exec(function (err, story) {
+        utils.render(req, res, "components/story", 200, err, story, {
+          story: story,
+          user: story.user,
+        });
+      });
   } catch (e) {
     res.status(500).send("error" + e);
   }
