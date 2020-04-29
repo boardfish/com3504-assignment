@@ -40,7 +40,7 @@ exports.insert = function (req, res) {
 
 exports.getStory = function (req, res) {
   try {
-    Story.findById(req.params.storyId, "userId text likes")
+    Story.findById(req.params.storyId)
       .populate("user")
       .populate({ path: "likes", select: "vote -_id" })
       .exec(function (err, story) {
@@ -97,7 +97,7 @@ exports.getAllUserStories = function (req, res) {
 
 exports.getAllStories = function (req, res) {
   try {
-    Story.find({}, "text likes")
+    Story.find({})
       .populate("user")
       .populate({ path: "likes", select: "vote -_id" })
       .exec(function (err, stories) {
