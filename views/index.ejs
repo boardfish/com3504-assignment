@@ -1,6 +1,10 @@
 <%- include("layouts/head") %>
 <h1><%= title %></h1>
 <p>Welcome to <%= title %></p>
+<form action="" onsubmit="return sendText()">
+  <input id="text" autocomplete="off" autofocus/>
+  <button>Send</button>
+</form>
 <%- include("components/post",{
   user: {
     username: 'boardfish_',

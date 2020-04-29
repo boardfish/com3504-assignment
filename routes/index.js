@@ -7,4 +7,9 @@ router.get("/", function(req, res, next) {
   res.render("index", { title: "Express", path: req.path, navbar: navbar })
 });
 
+router.post("/", function (req, res, next) {
+  console.log("Post is running")
+
+})
+
 module.exports = router;

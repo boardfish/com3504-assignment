@@ -28,8 +28,16 @@ var server = http.createServer(app);
 
 var io = require('socket.io')
   .listen(server, {pingTimeout: 60000});
-var socket_module = require('../socket.io/socket-io');
+console.log("This should be running");
+var socket_module = require('../socket.io/socket.io');
+
 socket_module.init(io, app);
+socket_module.joinRoom(io, app);
+var sockIo = require('socket.io')();
+//express.io = sockIo;
+//sockIo.on('connection', function(socket){
+//  console.log('A client connection occurred!');
+//});
 
 /**
  * Listen on provided port, on all network interfaces.
