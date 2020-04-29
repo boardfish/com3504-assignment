@@ -5,7 +5,7 @@ var utils = require("./utils");
 exports.insert = function (req, res) {
   var like = new Like({
     story: req.params.storyId,
-    vote: req.params.vote,
+    vote: (req.params.vote - 1),
   });
   console.log("received: " + like);
   like.save(function (err, like) {

@@ -12,17 +12,17 @@
 // };
 
 // We need jQuery smarts for seralizeArray
-const newPostForm = $("form#newPost");
+const newStoryForm = $("form#newStory");
 
 const submitStory = (data) => {
   sendAjaxQuery(
-    `http://localhost:4000/stories`,
+    `/stories`,
     data,
     () => {
-      alert("We couldn't submit your post. Please try again.");
+      alert("We couldn't submit your story. Please try again.");
     },
     () => {
-      newPostForm.slideUp(400, () => newPostForm.trigger("reset").slideDown())
+      newStoryForm.slideUp(400, () => newStoryForm.trigger("reset").slideDown())
     }
   );
 };
@@ -35,7 +35,7 @@ const serializeToJson = (jQueryFormObject) => {
   }, {});
 }
 
-  newPostForm.submit((e) => {
+  newStoryForm.submit((e) => {
     e.preventDefault();
-    submitStory(JSON.stringify(serializeToJson(newPostForm)));
+    submitStory(JSON.stringify(serializeToJson(newStoryForm)));
   })
