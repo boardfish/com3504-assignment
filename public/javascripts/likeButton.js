@@ -15,7 +15,7 @@ const buttons = document.querySelectorAll("span.fivestars");
 
 const submitLike = (storyId, vote) => {
   sendAjaxQuery(
-    `http://localhost:4000/stories/${storyId}/rate/${vote}`,
+    `/stories/${storyId}/rate/${vote}`,
     {},
     () => {
       alert("Error");
