@@ -1,7 +1,9 @@
-<form class="card card-body mb-3" action="http://localhost:4000/stories" method="POST" id="newPost">
+<form class="card card-body mb-3" action="/stories" method="POST" id="newStory">
   <div class="form-group">
-    <label for="text">Write your post here.</label>
+    <label for="text">Write your story here.</label>
     <textarea class="form-control" id="text" name="text"></textarea>
+    <label for="text">User ID (will be retrieved from token in final app)</label>
+    <input name="user" />
   </div>
   <!--
   FIXME: Include when photos are added to the schema
