@@ -3,17 +3,7 @@
 <% stories.forEach(story => { %>
   <%- include("components/story",{
     user: story.user,
-    story: {
-      id: story._id,
-      text: story.text,
-      photos: [
-        'https://placehold.it/300',
-        'https://placehold.it/300',
-        'https://placehold.it/300',
-        'https://placehold.it/300'
-      ],
-      likes: story.likes
-    }
+    story: story
   }) %>
   <% }) %>
 <%- include("layouts/foot") %>
