@@ -4,23 +4,12 @@ var path = require("path")
 var cookieParser = require("cookie-parser")
 var logger = require("morgan")
 
-var io = require('socket.io')(80);
-io.on('connection', function (socket)
- {
-   io.emit('this', { will: 'be received by everyone'});
-
-   socket.on('private message', function (from, msg) {
-     console.log('I have received a private message be ', from, ' saying ', msg)
-   });
-
-   socket.on('disconnect', function () {
-     io.emit('user disconnected');
-   });
-
-});
-
 var indexRouter = require("./routes/index")
 var usersRouter = require("./routes/users")
+
+
+
+
 
 
 
