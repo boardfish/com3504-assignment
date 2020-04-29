@@ -25,15 +25,13 @@ const submitStory = (data) => {
       newStoryForm.slideUp(400, () =>
         newStoryForm.trigger("reset").slideDown()
       );
+      loadStories();
     }
   );
 };
 
 $(document).ready(function () {
-  console.log('ret-2-go!')
-  firstOrCache({ user: "bar", id: "baz"})
-  firstOrCache({ user: "bar", id: "bam"})
-  firstOrCache({ user: "bar", id: "bap"})
+  loadStories();
 });
 
 const serializeToJson = (jQueryFormObject) => {
