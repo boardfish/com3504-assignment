@@ -31,19 +31,9 @@ const submitStory = (data) => {
 
 $(document).ready(function () {
   console.log('ret-2-go!')
-  initDatabase()
-    .then(async (db) => {
-      var tx = db.transaction("stories", "readwrite");
-      var store = tx.objectStore("stories");
-      var data = { user: "bar", id: "baz"}
-      console.log('adding the thing')
-      await store.add(data);
-      return tx.complete;
-    })
-    .then(() => {
-      console.log("i have no console and I must log");
-    })
-    .catch((err) => console.log(err));
+  firstOrCache({ user: "bar", id: "baz"})
+  firstOrCache({ user: "bar", id: "bam"})
+  firstOrCache({ user: "bar", id: "bap"})
 });
 
 const serializeToJson = (jQueryFormObject) => {

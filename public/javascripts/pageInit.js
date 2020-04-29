@@ -16,3 +16,23 @@ initDatabase = () => {
 
   return dbPromise;
 };
+
+// Checks if something exists in the stories store, and adds it if it doesn't
+firstOrCache = (object) => {
+  initDatabase()
+    .then(async (db) => {
+      var tx = db.transaction("stories", "readwrite");
+      var store = tx.objectStore("stories");
+      const cachedValue = await store.get(object.id);
+      if (cachedValue == null) {
+        const newValue = await store.add(object);
+        console.log('Caching...')
+        console.log(object)
+      } else {
+        console.log('Cached.')
+        console.log(cachedValue)
+      }
+      return tx.complete;
+    })
+    .catch((err) => console.log(err));
+}
