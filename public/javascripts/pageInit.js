@@ -1,3 +1,11 @@
+registerServiceWorker = () => {
+  if ('serviceworker' in navigator) {
+    navigator.serviceWorker.register('./serviceWorker.js')
+  } else {
+    console.log('Your browser cannot register a service worker.')
+  }
+}
+
 initDatabase = () => {
   if (!("indexedDB" in window)) {
     console.log("This browser doesn't support IndexedDB");
@@ -85,3 +93,5 @@ const renderStories = (
     }
   });
 };
+
+registerServiceWorker()
