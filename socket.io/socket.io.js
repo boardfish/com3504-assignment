@@ -1,7 +1,7 @@
 exports.init = function (io, app){
   //console.log('Socket.io is connected');
   io.sockets.on('connection', function (socket) {
-    //console.log("This bit is working");
+    console.log("This bit is working");
     socket.broadcast.emit('broadcast', 'hello!');
     try {
       socket.on('saveStory', function (data){

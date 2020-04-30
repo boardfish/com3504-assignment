@@ -11,26 +11,8 @@
 
   <!-- Socket io -->
   <script src="/socket.io/socket.io.js"></script>
-  <script language="javascript" src="javascripts/buttonClick.js"></script>
-  <script>
-    var socket = io();
+  <script language = "javascript" src="javascripts/respondPost.js"></script>
 
-    function sendText() {
-      try {
-        socket.emit('saveStory', 'test');
-      } catch (e) {
-        res.status(500).send("error" + e);
-      }
-      return false;
-
-    }
-
-    socket.on('updatechat', function (message){
-      //console.log("Update is running");
-      //This is where the code will be added to update the story
-    });
-
-  </script>
   <title><%= title %></title>
 </head>
 

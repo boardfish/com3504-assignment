@@ -1,5 +1,6 @@
 <%- include("layouts/head") %>
 <%- include("components/newStory") %>
+<%- include("components/newestStory") %>
 <% stories.forEach(story => { %>
   <%- include("components/story",{
     user: story.user,
