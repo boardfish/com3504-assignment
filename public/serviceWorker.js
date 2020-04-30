@@ -87,6 +87,9 @@ self.addEventListener("fetch", (e) => {
     case /^\/user\/[0-9a-fA-F]{24}\/stories$/.test(path):
       networkFallingBackToCache(e);
       break;
+    case /ui-avatars.com/.test(path):
+      genericFallback(e, '/images/defaultProfilePic.png')
+      break;
     default:
       cacheFallingBackToNetwork(e);
       break;
