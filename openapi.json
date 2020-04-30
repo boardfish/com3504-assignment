@@ -1,251 +1,264 @@
 {
-   "openapi": "3.0.2",
-   "servers": [{ "url": "http://localhost:4000/" }],
-   "info": {
-      "description": "This specification guides the creation of the endpoints necessary for this\ngroup's implementation of the COM3504 assignment.\n",
-      "version": "1.0.0",
-      "title": "COM3504 Assignment",
-      "contact": {
-         "email": "sgfish1@sheffield.ac.uk"
-      }
-   },
-   "tags": [
-      {
-         "name": "stories",
-         "description": "List and like stories on the site"
-      }
-   ],
-   "paths": {
-      "/stories": {
-         "get": {
-            "tags": [
-               "stories"
-            ],
-            "summary": "Get all stories",
-            "description": "Returns all stories",
-            "operationId": "getStories",
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/StoryArray"
-                        }
-                     }
-                  }
-               }
-            }
-         },
-         "post": {
-            "tags": [
-               "stories"
-            ],
-            "summary": "Create a story",
-            "description": "",
-            "operationId": "addStory",
-            "requestBody": {
-               "$ref": "#/components/requestBodies/Story"
-            },
-            "responses": {
-               "201": {
-                  "description": "Created",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Story"
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid input"
-               }
-            }
-         }
-      },
-      "/stories/{storyId}": {
-         "get": {
-            "tags": [
-               "stories"
-            ],
-            "summary": "Find story by ID",
-            "description": "Returns a single story",
-            "operationId": "getStoryById",
-            "parameters": [
-               {
-                  "name": "storyId",
-                  "in": "path",
-                  "description": "ID of story to return",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Story"
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid ID supplied"
-               },
-               "404": {
-                  "description": "Story not found"
-               }
-            }
-         }
-      },
-      "/stories/{storyId}/rate/{vote}": {
-         "post": {
-            "tags": [
-               "stories"
-            ],
-            "summary": "Like a story",
-            "description": "Creates a like for a story",
-            "operationId": "likeStory",
-            "parameters": [
-               {
-                  "name": "storyId",
-                  "in": "path",
-                  "description": "ID of story to like",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               },
-               {
-                  "name": "vote",
-                  "in": "path",
-                  "description": "Rating to give to story",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               }
-            ],
-            "responses": {
-               "204": {
-                  "description": "successful operation"
-               },
-               "400": {
-                  "description": "Invalid ID or rating supplied"
-               },
-               "404": {
-                  "description": "Story not found"
-               }
-            }
-         }
-      },
-      "/users/{userId}/stories": {
-         "get": {
-            "tags": [
-               "stories"
-            ],
-            "summary": "Find a user's stories",
-            "description": "Returns stories a user has created",
-            "operationId": "getUserStories",
-            "parameters": [
-               {
-                  "name": "userId",
-                  "in": "path",
-                  "description": "ID of user whose stories should be returned",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/StoryArray"
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid ID supplied"
-               },
-               "404": {
-                  "description": "User not found"
-               }
-            }
-         }
-      }
-   },
-   "components": {
-      "requestBodies": {
-         "Story": {
+  "openapi": "3.0.2",
+  "servers": [
+    {
+      "url": "http://localhost:4000/"
+    }
+  ],
+  "info": {
+    "description": "This specification guides the creation of the endpoints necessary for this\ngroup's implementation of the COM3504 assignment.\n",
+    "version": "1.0.0",
+    "title": "COM3504 Assignment",
+    "contact": {
+      "email": "sgfish1@sheffield.ac.uk"
+    }
+  },
+  "tags": [
+    {
+      "name": "stories",
+      "description": "List and like stories on the site"
+    }
+  ],
+  "paths": {
+    "/stories": {
+      "get": {
+        "tags": ["stories"],
+        "summary": "Get all stories",
+        "description": "Returns all stories",
+        "operationId": "getStories",
+        "responses": {
+          "200": {
+            "description": "successful operation",
             "content": {
-               "application/json": {
-                  "schema": {
-                     "$ref": "#/components/schemas/Story"
-                  }
-               }
-            },
-            "description": "story object for listing",
-            "required": true
-         }
-      },
-      "schemas": {
-         "Story": {
-            "type": "object",
-            "properties": {
-               "storyId": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "userId": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "text": {
-                  "type": "string",
-                  "description": "Post content"
-               },
-               "likes": {
-                  "type": "array",
-                  "items": {
-                     "$ref": "#/components/schemas/Like"
-                  }
-               }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoryArray"
+                }
+              }
             }
-         },
-         "StoryArray": {
+          }
+        }
+      },
+      "post": {
+        "tags": ["stories"],
+        "summary": "Create a story",
+        "description": "",
+        "operationId": "addStory",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Story"
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Story"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/stories/{storyId}": {
+      "get": {
+        "tags": ["stories"],
+        "summary": "Find story by ID",
+        "description": "Returns a single story",
+        "operationId": "getStoryById",
+        "parameters": [
+          {
+            "name": "storyId",
+            "in": "path",
+            "description": "ID of story to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Story"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Story not found"
+          }
+        }
+      }
+    },
+    "/stories/{storyId}/rate/{vote}": {
+      "post": {
+        "tags": ["stories"],
+        "summary": "Like a story",
+        "description": "Creates a like for a story",
+        "operationId": "likeStory",
+        "parameters": [
+          {
+            "name": "storyId",
+            "in": "path",
+            "description": "ID of story to like",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "vote",
+            "in": "path",
+            "description": "Rating to give to story",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid ID or rating supplied"
+          },
+          "404": {
+            "description": "Story not found"
+          }
+        }
+      }
+    },
+    "/users/{userId}/stories": {
+      "get": {
+        "tags": ["stories"],
+        "summary": "Find a user's stories",
+        "description": "Returns stories a user has created",
+        "operationId": "getUserStories",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user whose stories should be returned",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoryArray"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "Story": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StoryRequest"
+            }
+          }
+        },
+        "description": "story object for listing",
+        "required": true
+      }
+    },
+    "schemas": {
+      "StoryRequest": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "description": "ID of the user who is making the post (to be removed)"
+          },
+          "text": {
+            "type": "string",
+            "description": "Post content"
+          }
+        }
+      },
+      "Story": {
+        "type": "object",
+        "properties": {
+          "storyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "user": {
+            "type": "string",
+            "description": "User's ID in the database (populated on GET)"
+          },
+          "text": {
+            "type": "string",
+            "description": "Post content"
+          },
+          "likes": {
             "type": "array",
             "items": {
-               "$ref": "#/components/schemas/Story"
-            },
-            "description": "List of story object"
-         },
-         "Like": {
-            "type": "object",
-            "properties": {
-               "storyId": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "vote": {
-                  "type": "integer",
-                  "format": "int64"
-               }
+              "$ref": "#/components/schemas/Like"
             }
-         }
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "StoryArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Story"
+        },
+        "description": "List of story object"
+      },
+      "Like": {
+        "type": "object",
+        "properties": {
+          "story": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "vote": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
       }
-   }
+    }
+  }
 }

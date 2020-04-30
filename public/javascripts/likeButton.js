@@ -15,22 +15,22 @@ const buttons = document.querySelectorAll("span.fivestars");
 
 const submitLike = (storyId, vote) => {
   sendAjaxQuery(
-    `http://localhost:4000/stories/${storyId}/rate/${vote}`,
+    `/stories/${storyId}/rate/${vote}`,
     {},
     () => {
       alert("Error");
     },
     () => {
-      $(`span.fivestars[data-post-id=${storyId}]`).removeClass(Array(5).fill().map((_, i) => `text-${i+1}-star`).join(' '))
-      $(`span.fivestars[data-post-id=${storyId}]:nth-child(-n+${vote})`).addClass(`text-${vote}-star`)
-      $(`span.fivestars[data-post-id=${storyId}]`).removeClass('selected')
-      $(`span.fivestars[data-post-id=${storyId}]:nth-child(${vote})`).addClass('selected')
+      $(`span.fivestars[data-story-id=${storyId}]`).removeClass(Array(5).fill().map((_, i) => `text-${i+1}-star`).join(' '))
+      $(`span.fivestars[data-story-id=${storyId}]:nth-child(-n+${vote})`).addClass(`text-${vote}-star`)
+      $(`span.fivestars[data-story-id=${storyId}]`).removeClass('selected')
+      $(`span.fivestars[data-story-id=${storyId}]:nth-child(${vote})`).addClass('selected')
     }
   );
 };
 
 buttons.forEach((button) =>
   button.addEventListener("click", () => {
-    submitLike(button.dataset.postId, button.dataset.value);
+    submitLike(button.dataset.storyId, button.dataset.value);
   })
 );

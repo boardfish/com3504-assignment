@@ -1,26 +1,9 @@
 <%- include("layouts/head") %>
-<h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
-<form action="" onsubmit="return sendText()">
-  <input id="text" autocomplete="off" autofocus/>
-  <button>Send</button>
-</form>
-<%- include("components/post",{
-  user: {
-    username: 'boardfish_',
-    nickname: 'Simon Fish',
-    id: 3
-  },
-  post: {
-    id: 1,
-    text: 'Hello world, hello world.',
-    photos: [
-      'https://placehold.it/300',
-      'https://placehold.it/300',
-      'https://placehold.it/300',
-      'https://placehold.it/300'
-    ],
-    ratings: [2, 4, 6, 0, 8]
-  }
-}) %>
+<%- include("components/newStory") %>
+<% stories.forEach(story => { %>
+  <%- include("components/story",{
+    user: story.user,
+    story: story
+  }) %>
+  <% }) %>
 <%- include("layouts/foot") %>

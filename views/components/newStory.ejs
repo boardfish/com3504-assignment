@@ -1,0 +1,16 @@
+<form class="card card-body mb-3" action="/stories" method="POST" id="newStory">
+  <div class="form-group">
+    <label for="text">Write your story here.</label>
+    <textarea class="form-control" id="text" name="text"></textarea>
+    <label for="text">User ID (will be retrieved from token in final app)</label>
+    <input name="user" />
+  </div>
+  <!--
+  FIXME: Include when photos are added to the schema
+  <div class="custom-file mb-3">
+    <input type="file" class="custom-file-input" id="photos" multiple="multiple">
+    <label class="custom-file-label" for="photos">Choose photos</label>
+  </div>
+  -->
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
