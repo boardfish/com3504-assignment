@@ -37,23 +37,51 @@ firstOrCache = (object) => {
     .catch((err) => console.log(err));
 };
 
+const getStoriesFromCache = () => {
+  return initDatabase()
+    .then(async (db) => {
+      var tx = db.transaction("stories", "readonly");
+      var store = tx.objectStore("stories");
+      var stories = await store.getAll();
+      return stories;
+    })
+    .catch((err) => console.log(err));
+};
+
 const loadStories = () => {
   $.ajax({
     // Base on current pathname, so /users/:id/stories only gets user stories
     url: window.location.pathname,
     success: (stories) => {
-      stories.forEach((story) => {
-        // Cache if they're not already cached, then...
-        firstOrCache(story);
-        // ...render if they aren't already rendered.
-        if ($(`#story-${story._id}`).length === 0) {
-          $.get(`/stories/${story._id}`, {}, (html) => {
-              $("main.container").append(html);
-          });
-        }
+      renderStories(stories);
+    },
+    error: () => {
+      // FIXME: gets all stories if on /users/:id/stories
+      getStoriesFromCache().then((stories) => {
+        renderStories(stories);
       });
     },
     contentType: "application/json",
     dataType: "json",
+  });
+};
+
+const renderStories = (
+  stories,
+  options = {
+    skipCaching: false,
+  }
+) => {
+  stories.forEach((story) => {
+    // Cache if they're not already cached, then...
+    if (!options.skipCaching) {
+      firstOrCache(story);
+    }
+    // ...render if they aren't already rendered.
+    if ($(`#story-${story._id}`).length === 0) {
+      $.get(`/stories/${story._id}`, {}, (html) => {
+        $("main.container").append(html);
+      });
+    }
   });
 };

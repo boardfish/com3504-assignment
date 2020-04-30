@@ -31,7 +31,7 @@ const submitStory = (data) => {
 };
 
 $(document).ready(function () {
-  loadStories();
+  loadStories()
 });
 
 const serializeToJson = (jQueryFormObject) => {
