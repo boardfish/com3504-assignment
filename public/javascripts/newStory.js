@@ -21,11 +21,18 @@ const submitStory = (data) => {
     () => {
       alert("We couldn't submit your story. Please try again.");
     },
-    () => {
-      newStoryForm.slideUp(400, () => newStoryForm.trigger("reset").slideDown())
+    (data) => {
+      newStoryForm.slideUp(400, () =>
+        newStoryForm.trigger("reset").slideDown()
+      );
+      loadStories();
     }
   );
 };
+
+$(document).ready(function () {
+  loadStories()
+});
 
 const serializeToJson = (jQueryFormObject) => {
   // from https://stackoverflow.com/a/24012884
@@ -33,9 +40,9 @@ const serializeToJson = (jQueryFormObject) => {
     obj[item.name] = item.value;
     return obj;
   }, {});
-}
+};
 
-  newStoryForm.submit((e) => {
-    e.preventDefault();
-    submitStory(JSON.stringify(serializeToJson(newStoryForm)));
-  })
+newStoryForm.submit((e) => {
+  e.preventDefault();
+  submitStory(JSON.stringify(serializeToJson(newStoryForm)));
+});

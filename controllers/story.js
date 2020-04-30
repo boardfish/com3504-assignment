@@ -44,9 +44,11 @@ exports.getStory = function (req, res) {
       .populate("user")
       .populate({ path: "likes", select: "vote -_id" })
       .exec(function (err, story) {
+        if (story == null) {
+          utils.render(req, res, "components/story", 404, 'Not Found', {}, {});
+        }
         utils.render(req, res, "components/story", 200, err, story, {
-          story: story,
-          user: story.user,
+          story: story
         });
       });
   } catch (e) {
@@ -84,9 +86,7 @@ exports.getAllUserStories = function (req, res) {
         .populate("user")
         .populate({ path: "likes", select: "vote -_id" })
         .exec(function (err, stories) {
-          utils.render(req, res, "index", 200, err, stories, {
-            stories: stories,
-          });
+          utils.render(req, res, "index", 200, err, stories, {});
         });
     });
   } catch (e) {
