@@ -14,7 +14,8 @@ function sendText() {
 
 socket.on('updatechat', function (message){
   //var storyToAdd = story.getStory(req, res);
-  var storyToAdd = 2;
+  var storyToAdd = document.getElementById('text').value;
+  console.log(storyToAdd);
   var storyBox = document.getElementById('newest');
   console.log("Update is running");
   storyBox.innerHTML = '</br>'+ storyToAdd

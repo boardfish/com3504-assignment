@@ -1,9 +1,9 @@
-<form class="card card-body mb-3" action="/stories" method="POST" id="newStory">
+<form class="card card-body mb-3" onsubmit="return sendText();" action="/stories" method="POST" id="newStory">
   <div class="form-group">
     <label for="text">Write your story here.</label>
     <textarea class="form-control" id="text" name="text"></textarea>
-    <label for="text">User ID (will be retrieved from token in final app)</label>
-    <input name="user" />
+    <label for="text" id="user">User ID (will be retrieved from token in final app)</label>
+    <input name="user" id="userNumber" />
   </div>
   <!--
   FIXME: Include when photos are added to the schema

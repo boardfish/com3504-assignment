@@ -10,5 +10,5 @@ db.once("open", function() {
   // we're connected!
   console.log('Database connected');
 });
-//db.dropDatabase();
+db.dropDatabase();
 //console.log("DROPPED!!!!!!!!!");

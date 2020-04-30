@@ -10,7 +10,13 @@ var stories = require('../controllers/story');
 var Story = require('../models/story');
 /* GET home page. */
 router.get("/", stories.getAllStories);
-router.post("/stories", stories.insert);
+router.post("/stories", function(req, res){
+  stories.insert(req, res);
+  console.log("This is running");
+
+
+
+});
 router.post("/users", users.insert);
 
 router.post("/", function (req, res, next) {
