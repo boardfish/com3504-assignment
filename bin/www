@@ -4,9 +4,14 @@
  * Module dependencies.
  */
 
+var fs = require('fs');
 var app = require('../app');
 var debug = require('debug')('com3504-assignment:server');
-var http = require('http');
+var https = require('https');
+var options = {
+  key: fs.readFileSync('./private/localhost.key'),
+  cert: fs.readFileSync('./private/localhost.crt'),
+}
 var database = require('../databases/users');
 
 /**
@@ -17,10 +22,10 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTPS server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.

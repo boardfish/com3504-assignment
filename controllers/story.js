@@ -86,9 +86,7 @@ exports.getAllUserStories = function (req, res) {
         .populate("user")
         .populate({ path: "likes", select: "vote -_id" })
         .exec(function (err, stories) {
-          utils.render(req, res, "index", 200, err, stories, {
-            stories: stories,
-          });
+          utils.render(req, res, "index", 200, err, stories, {});
         });
     });
   } catch (e) {

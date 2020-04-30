@@ -1,9 +1,3 @@
 <%- include("layouts/head") %>
 <%- include("components/newStory") %>
-<% stories.forEach(story => { %>
-  <%- include("components/story",{
-    user: story.user,
-    story: story
-  }) %>
-  <% }) %>
 <%- include("layouts/foot") %>
