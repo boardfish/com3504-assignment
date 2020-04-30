@@ -1,6 +1,6 @@
 registerServiceWorker = () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./serviceWorker.js')
+    navigator.serviceWorker.register('/serviceWorker.js')
   } else {
     console.log('Your browser cannot register a service worker.')
   }
