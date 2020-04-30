@@ -31,11 +31,6 @@ var io = require('socket.io')
 var socket_module = require('../socket.io/socket.io');
 
 socket_module.init(io, app);
-var sockIo = require('socket.io')();
-//express.io = sockIo;
-//sockIo.on('connection', function(socket){
-//  console.log('A client connection occurred!');
-//});
 
 /**
  * Listen on provided port, on all network interfaces.

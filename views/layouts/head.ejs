@@ -13,24 +13,21 @@
   <script src="/socket.io/socket.io.js"></script>
   <script language="javascript" src="javascripts/buttonClick.js"></script>
   <script>
-    console.log("This is in the header");
     var socket = io();
-    console.log("Script has opened");
 
     function sendText() {
       try {
-        console.log("Runs from other page");
         socket.emit('saveStory', 'test');
       } catch (e) {
-        console.log("This didn't work");
+        res.status(500).send("error" + e);
       }
       return false;
 
     }
 
     socket.on('updatechat', function (message){
-      console.log("Update is running");
-
+      //console.log("Update is running");
+      //This is where the code will be added to update the story
     });
 
   </script>
