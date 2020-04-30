@@ -7,6 +7,7 @@ var filesToCache = [
   "/javascripts/pageInit.js",
   "/javascripts/likeButton.js",
   "/javascripts/newStory.js",
+  "/stylesheets/style.css",
 ];
 
 self.addEventListener('install', (e) => {
@@ -34,18 +35,14 @@ self.addEventListener('activate', (e) => {
 })
 
 self.addEventListener('fetch', (e) => {
-  console.log(`[ServiceWorker] Fetch ${e.request.url}`)
+  console.log(`[ServiceWorker] Fetch ${e.request.method} ${e.request.url}`)
+  if (e.request.method === "POST") {
+    console.log("Not GET request, don't cache")
+    return fetch(e.request);
+  }
   e.respondWith(
     caches.match(e.request).then(response => {
-      return response || 
-       fetch(e.request).then((response) => {
-         if (!response.ok) {
-           console.log('Error: response not OK')
-         }
-       })
-       .catch((error) => {
-          console.log(`Error: ${error}`)
-       })
+      return response || fetch(e.request)
     })
   )
-}
+})
