@@ -14,6 +14,24 @@
   <script language="javascript" src="javascripts/buttonClick.js"></script>
   <script>
     console.log("This is in the header");
+    var socket = io();
+    console.log("Script has opened");
+
+    function sendText() {
+      try {
+        console.log("Runs from other page");
+        socket.emit('saveStory', 'test');
+      } catch (e) {
+        console.log("This didn't work");
+      }
+      return false;
+
+    }
+
+    socket.on('updatechat', function (message){
+      console.log("Update is running");
+
+    });
 
   </script>
   <title><%= title %></title>

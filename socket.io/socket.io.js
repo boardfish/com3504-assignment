@@ -5,7 +5,8 @@ exports.init = function (io, app){
     socket.broadcast.emit('broadcast', 'hello!');
     try {
       socket.on('saveStory', function (data){
-        socket.broadcast.emit('broadcast', 'This should submit when done');
+        io.emit('updatechat', 'This should submit when done');
+
         console.log("Ran from io file");
       });
 
@@ -27,19 +28,4 @@ exports.init = function (io, app){
       err.print();
     }
   })
-};
-exports.joinRoom = function (io, app) {
-  console.log("JOINING ROOM");
-  io.on('connection', function (socket) {
-    console.log("Join has started");
-    socket.on('joining', function (userId, roomId) {
-      socket.join(roomId);
-      console.log("ROOM ID IS " + roomId);
-      socket.to(roomId).emit('updatechat', socket.username + 'has joined this room', '');
-
-    });
-    socket.on('sendchat', function (data) {
-      io.sockets.in(socket.room).emit('updatechat', socket.username, data);
-    });
-  });
 };
