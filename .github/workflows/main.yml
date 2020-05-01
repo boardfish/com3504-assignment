@@ -24,7 +24,7 @@ jobs:
     - name: Prettier Action
       uses: creyD/prettier_action@v2.2
       with:
-        prettier_options: '--no-semi --write *.js'
+        prettier_options: '--no-semi --write *.js databases/*.js models/*.js controllers/*.js routes/*.js bin/www'
         branch: ${{ github.head_ref }}
         prettier_version: false
       env:
