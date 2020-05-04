@@ -5,7 +5,7 @@ services:
     command: 'bin/www'
     environment:
       - MONGO_CONNECTION_STRING=mongodb://db:27017/development
-      - SERVER_HOST="localhost:4000" # Change to 3000 for actual backend and not stub
+      - SERVER_HOST="localhost:3000"
     ports:
       - "3000:3000"
   db:
