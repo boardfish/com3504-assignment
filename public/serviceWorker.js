@@ -72,7 +72,7 @@ const genericFallback = (e, fallback) => {
 self.addEventListener("fetch", (e) => {
   console.log(`[ServiceWorker] Fetch ${e.request.method} ${e.request.url}`);
   if (e.request.method === "POST") {
-    return fetch(e.request);
+    return e.respondWith(fetch(e.request));
   }
   const path = getPathFromURL(e.request.url);
   // https://stackoverflow.com/a/2896642
