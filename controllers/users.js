@@ -28,3 +28,24 @@ exports.insert = function (req, res) {
     res.status(500).send("error" + e)
   }
 }
+
+exports.signIn = function (req, res) {
+  Users.findOne({ username: req.body.username }).exec(
+    (err, user) => {
+      if (user == null) {
+        res.setHeader("Content-Type", "application/json")
+        res.status(403).send()
+      } else if (user.passwordIsCorrect(req.body.password)) {
+        console.log(user)
+        console.log(req.body)
+        res.setHeader("Content-Type", "application/json")
+        res.status(200).send(user)
+      } else {
+        console.log(user)
+        console.log(req.body)
+        res.setHeader("Content-Type", "application/json")
+        res.status(403).send()
+      }
+    }
+  )
+}

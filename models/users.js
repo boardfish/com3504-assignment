@@ -9,8 +9,10 @@ const User = new Schema({
   nickname: { type: String },
 });
 
-User.methods.passwordIsCorrect = (passwordInput) =>
-  this.password === passwordInput;
+// Can't use arrow functions here - they prevent binding `this`
+User.methods.passwordIsCorrect = function (passwordInput) {
+  return (this.password === passwordInput);
+}
 
 const userModel = mongoose.model("User", User);
 
