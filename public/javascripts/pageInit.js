@@ -25,26 +25,23 @@ initDatabase = () => {
   return dbPromise;
 };
 
-// Checks if something exists in the stories store, and adds it if it doesn't
-firstOrCache = (object) => {
+// Caches a story.
+cacheStory = (object) => {
   initDatabase()
     .then(async (db) => {
       var tx = db.transaction("stories", "readwrite");
       var store = tx.objectStore("stories");
-      const cachedValue = await store.get(object._id);
-      if (cachedValue == null) {
-        const newValue = await store.add(object);
-        console.log("Caching...");
-        console.log(object);
-      } else {
-        console.log("Cached.");
-        console.log(cachedValue);
-      }
+      const newValue = await store.add(object);
+      console.log("Could not post story. Caching...");
+      console.log(object);
+      console.log(newValue);
       return tx.complete;
     })
     .catch((err) => console.log(err));
 };
 
+// Gets stories from the cache
+// TODO: try to post them.
 const getStoriesFromCache = () => {
   return initDatabase()
     .then(async (db) => {
@@ -64,10 +61,7 @@ const loadStories = () => {
       renderStories(stories);
     },
     error: () => {
-      // FIXME: gets all stories if on /users/:id/stories
-      getStoriesFromCache().then((stories) => {
-        renderStories(stories);
-      });
+      // FIXME: Display user-friendly error - this shouldn't ever have to appear
     },
     contentType: "application/json",
     dataType: "json",
@@ -76,16 +70,9 @@ const loadStories = () => {
 
 const renderStories = (
   stories,
-  options = {
-    skipCaching: false,
-  }
 ) => {
   stories.forEach((story) => {
-    // Cache if they're not already cached, then...
-    if (!options.skipCaching) {
-      firstOrCache(story);
-    }
-    // ...render if they aren't already rendered.
+    // Render if they aren't already rendered.
     if ($(`#story-${story._id}`).length === 0) {
       $.get(`/stories/${story._id}`, {}, (html) => {
         $("main.container").append(html);
