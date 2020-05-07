@@ -1,10 +1,10 @@
 registerServiceWorker = () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/serviceWorker.js')
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/serviceWorker.js");
   } else {
-    console.log('Your browser cannot register a service worker.')
+    console.log("Your browser cannot register a service worker.");
   }
-}
+};
 
 initDatabase = () => {
   if (!("indexedDB" in window)) {
@@ -25,26 +25,23 @@ initDatabase = () => {
   return dbPromise;
 };
 
-// Checks if something exists in the stories store, and adds it if it doesn't
-firstOrCache = (object) => {
+// Caches a story.
+cacheStory = (object) => {
   initDatabase()
     .then(async (db) => {
       var tx = db.transaction("stories", "readwrite");
       var store = tx.objectStore("stories");
-      const cachedValue = await store.get(object._id);
-      if (cachedValue == null) {
-        const newValue = await store.add(object);
-        console.log("Caching...");
-        console.log(object);
-      } else {
-        console.log("Cached.");
-        console.log(cachedValue);
-      }
+      const newValue = await store.add(object);
+      console.log("Could not post story. Caching...");
+      console.log(object);
+      console.log(newValue);
       return tx.complete;
     })
     .catch((err) => console.log(err));
 };
 
+// Gets stories from the cache
+// TODO: try to post them.
 const getStoriesFromCache = () => {
   return initDatabase()
     .then(async (db) => {
@@ -64,28 +61,16 @@ const loadStories = () => {
       renderStories(stories);
     },
     error: () => {
-      // FIXME: gets all stories if on /users/:id/stories
-      getStoriesFromCache().then((stories) => {
-        renderStories(stories);
-      });
+      // Handled by cacheThenNetwork
     },
     contentType: "application/json",
     dataType: "json",
   });
 };
 
-const renderStories = (
-  stories,
-  options = {
-    skipCaching: false,
-  }
-) => {
+const renderStories = (stories) => {
   stories.forEach((story) => {
-    // Cache if they're not already cached, then...
-    if (!options.skipCaching) {
-      firstOrCache(story);
-    }
-    // ...render if they aren't already rendered.
+    // Render if they aren't already rendered.
     if ($(`#story-${story._id}`).length === 0) {
       $.get(`/stories/${story._id}`, {}, (html) => {
         $("main.container").append(html);
@@ -94,4 +79,54 @@ const renderStories = (
   });
 };
 
-registerServiceWorker()
+const showErrorMessage = () => {
+  $("main.container")
+    .addClass("d-flex flex-grow-1 align-items-center justify-content-center")
+    .html(
+      [
+        '<div class="alert alert-danger text-center">',
+        '  <p class="mb-0">',
+        "     We could not retrieve posts. Please ensure that you have a working",
+        "     internet connection.",
+        "  </p>",
+        '  <button class="btn btn-info mt-2" onclick="location.reload();">Refresh Page</button>',
+        '</div>',
+      ].join("\n")
+    );
+};
+
+$(document).ready(() => {
+  registerServiceWorker();
+  var networkDataReceived = false;
+
+  // fetch fresh data
+  var networkUpdate = fetch(window.location.pathname, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      networkDataReceived = true;
+      renderStories(data);
+    });
+
+  // fetch cached data
+  caches
+    .match(window.location.pathname)
+    .then((response) => {
+      if (!response) throw Error("No data");
+      return response.json();
+    })
+    .then((data) => {
+      // don't overwrite newer network data
+      if (!networkDataReceived) {
+        renderStories(data);
+      }
+    })
+    .catch(function (e) {
+      // we didn't get cached data, the network is our last hope:
+      return networkUpdate;
+    })
+    .catch(showErrorMessage);
+});
