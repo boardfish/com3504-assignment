@@ -7,13 +7,16 @@ const signIn = (data) => {
     },
     (data) => {
       console.log(data);
+      localStorage.setItem("id", data.id);
+      localStorage.setItem("username", data.username);
+      signInForm.slideUp();
     }
   );
 };
 
-const signInForm = $("form#signIn")
+const signInForm = $("form#signIn");
 
-signInForm.submit((e) => { 
+signInForm.submit((e) => {
   e.preventDefault();
   signIn(JSON.stringify(serializeToJson(signInForm)));
 });
