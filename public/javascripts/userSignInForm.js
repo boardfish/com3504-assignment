@@ -7,9 +7,9 @@ const signIn = (data) => {
     },
     (data) => {
       console.log(data);
-      localStorage.setItem("id", data.id);
-      localStorage.setItem("username", data.username);
-      localStorage.setItem("token", data.token);
+      sessionStorage.setItem("id", data.id);
+      sessionStorage.setItem("username", data.username);
+      sessionStorage.setItem("token", data.token);
       signInForm.slideUp();
     }
   );
