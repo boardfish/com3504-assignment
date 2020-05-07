@@ -1,10 +1,10 @@
 registerServiceWorker = () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/serviceWorker.js')
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/serviceWorker.js");
   } else {
-    console.log('Your browser cannot register a service worker.')
+    console.log("Your browser cannot register a service worker.");
   }
-}
+};
 
 initDatabase = () => {
   if (!("indexedDB" in window)) {
@@ -61,16 +61,14 @@ const loadStories = () => {
       renderStories(stories);
     },
     error: () => {
-      // FIXME: Display user-friendly error - this shouldn't ever have to appear
+      // Handled by cacheThenNetwork
     },
     contentType: "application/json",
     dataType: "json",
   });
 };
 
-const renderStories = (
-  stories,
-) => {
+const renderStories = (stories) => {
   stories.forEach((story) => {
     // Render if they aren't already rendered.
     if ($(`#story-${story._id}`).length === 0) {
@@ -81,4 +79,54 @@ const renderStories = (
   });
 };
 
-registerServiceWorker()
+const showErrorMessage = () => {
+  $("main.container")
+    .addClass("d-flex flex-grow-1 align-items-center justify-content-center")
+    .html(
+      [
+        '<div class="alert alert-danger text-center">',
+        '  <p class="mb-0">',
+        "     We could not retrieve posts. Please ensure that you have a working",
+        "     internet connection.",
+        "  </p>",
+        '  <button class="btn btn-info mt-2" onclick="location.reload();">Refresh Page</button>',
+        '</div>',
+      ].join("\n")
+    );
+};
+
+$(document).ready(() => {
+  registerServiceWorker();
+  var networkDataReceived = false;
+
+  // fetch fresh data
+  var networkUpdate = fetch(window.location.pathname, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      networkDataReceived = true;
+      renderStories(data);
+    });
+
+  // fetch cached data
+  caches
+    .match(window.location.pathname)
+    .then((response) => {
+      if (!response) throw Error("No data");
+      return response.json();
+    })
+    .then((data) => {
+      // don't overwrite newer network data
+      if (!networkDataReceived) {
+        renderStories(data);
+      }
+    })
+    .catch(function (e) {
+      // we didn't get cached data, the network is our last hope:
+      return networkUpdate;
+    })
+    .catch(showErrorMessage);
+});
