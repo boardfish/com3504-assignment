@@ -2,8 +2,9 @@ var express = require("express");
 var router = express.Router();
 var stories = require("../controllers/story");
 var users = require("../controllers/users");
+var session = require("../models/session");
 var passport = require("passport");
-var crypto = require("crypto")
+var crypto = require("crypto");
 
 /* GET users listing. */
 router.get("/:userId/stories", stories.getAllUserStories);
@@ -13,9 +14,13 @@ router.post(
   // If this function gets called, authentication was successful.
   // `req.user` contains the authenticated user.
   (req, res) => {
-    require('crypto').randomBytes(48, function(err, buffer) {
-      res.json({ id: req.user.id, username: req.user.username, token: buffer.toString('hex') });
-    });
+    session.create({ user: req.user }, (err, newSession) => {
+      res.json({
+        id: req.user.id,
+        username: req.user.username,
+        token: newSession,
+      });
+    })
   }
 );
 
