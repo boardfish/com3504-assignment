@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "bootstrap": "^4.4.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -17,6 +18,8 @@
     "mongoose": "^5.9.5",
     "morgan": "~1.9.1",
     "node-sass-middleware": "^0.11.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "popper.js": "^1.16.1"
   }
 }
