@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var passport = require("passport");
+var session = require("express-session");
 var User = require("./models/users");
 var LocalStrategy = require("passport-local").Strategy;
 
@@ -35,29 +36,24 @@ app.use(
 );
 
 // Authentication - Passport
-passport.use(
-  new LocalStrategy(function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) {
-        return done(err);
-      }
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
       if (!user) {
-        return done(null, false, { message: "Incorrect username." });
+        return done(null, false, { message: 'Incorrect username.' });
       }
-      user.passwordIsCorrect(password, (err, isMatch) => {
-        if (err) {
-          console.log(err);
-          return done(err);
+      user.passwordIsCorrect(password, (err, isCorrect) => {
+        if (err) { return done(err); }
+        if (!isCorrect) {
+          return done(null, false, { message: 'Incorrect password.' });
         }
-        if (isMatch) {
-          return done(null, user);
-        } else {
-          return done(null, false, { message: "Incorrect password." });
-        }
-      });
+        return done(null, user);
+      })
     });
-  })
-);
+  }
+));
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
@@ -67,7 +63,9 @@ passport.deserializeUser(function(id, done) {
     done(err, user);
   });
 });
+app.use(session({ secret: "nodethings" }));
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
