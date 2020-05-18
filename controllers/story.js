@@ -15,7 +15,7 @@ exports.insert = function (req, res) {
   }
   try {
     var story = new Story({
-      user: storyData.user,
+      user: req.user,
       text: storyData.text,
       likes: [],
     })

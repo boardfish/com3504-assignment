@@ -1,6 +1,5 @@
 <%- include("layouts/head") %>
-<%- include("components/newStory") %>
-<%= JSON.stringify(user) %>
+<% if (Object.keys(user).length === 0 && user.constructor === Object) { %>
 <form id="signIn">
   <div class="form-group">
     <label for="username">Username</label>
@@ -13,4 +12,8 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<% } else { %>
+<a href="/logout" class="btn btn-danger">Logout</a>
+<%- include("components/newStory") %>
+<% } %>
 <%- include("layouts/foot") %>

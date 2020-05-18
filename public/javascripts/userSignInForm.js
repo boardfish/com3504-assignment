@@ -6,10 +6,7 @@ const signIn = (data) => {
       alert("We couldn't sign you in. Please try again.");
     },
     (data) => {
-      console.log(data);
-      sessionStorage.setItem("id", data.id);
-      sessionStorage.setItem("username", data.username);
-      sessionStorage.setItem("token", data.token);
+      window.location.reload();
       signInForm.slideUp();
     }
   );

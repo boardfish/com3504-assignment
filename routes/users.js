@@ -5,9 +5,10 @@ var passport = require("passport");
 
 /* GET users listing. */
 router.get("/:userId/stories", stories.getAllUserStories);
+router.get("/me", (req, res) => res.send(JSON.stringify(req.user)));
 router.post(
   "/sign_in",
-  passport.authenticate("local", { successRedirect: "/", failureRedirect: "/" })
+  passport.authenticate("local", { successRedirect: "/users/me" })
 );
 
 module.exports = router;
