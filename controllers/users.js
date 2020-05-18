@@ -1,9 +1,9 @@
-var Users = require("../models/users")
+var Users = require("../models/users");
 
 exports.insert = function (req, res) {
-  var userData = req.body
+  var userData = req.body;
   if (userData == null) {
-    res.status(403).send("No data sent!")
+    res.status(403).send("No data sent!");
   }
   try {
     var user = new Users({
@@ -11,20 +11,20 @@ exports.insert = function (req, res) {
       password: userData.password,
       email: userData.email,
       nickname: userData.nickname,
-    })
+    });
 
-    console.log("received + " + user)
+    console.log("received + " + user);
 
     user.save(function (err, user) {
-      console.log(user._id)
+      console.log(user._id);
       if (err) {
-        res.status(500).send("Invalid data!")
-        return
+        res.status(500).send("Invalid data!");
+        return;
       }
-      res.setHeader("Content-Type", "application/json")
-      res.send(JSON.stringify(user))
-    })
+      res.setHeader("Content-Type", "application/json");
+      res.send(JSON.stringify(user));
+    });
   } catch (e) {
-    res.status(500).send("error" + e)
+    res.status(500).send("error" + e);
   }
-}
+};

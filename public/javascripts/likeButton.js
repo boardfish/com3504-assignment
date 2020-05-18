@@ -7,7 +7,7 @@ const sendAjaxQuery = (url, data, errorCallback, successCallback) => {
     context: this,
     contentType: "application/json",
     error: errorCallback,
-    success: successCallback,
+    success: successCallback
   });
 };
 

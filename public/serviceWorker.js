@@ -129,6 +129,10 @@ self.addEventListener("fetch", (e) => {
   const path = getPathFromURL(e.request.url);
   // https://stackoverflow.com/a/2896642
   switch (true) {
+    // User sign-in - never cache
+    case /^\/users\/sign_in$/.test(path):
+      e.respondWith(fetch(e.request))
+      break;
     // All stories
     case /^\/$/.test(path):
       cacheThenNetwork(e);

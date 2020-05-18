@@ -11,5 +11,9 @@ var Story = require("../models/story")
 router.get("/", stories.getAllStories)
 router.post("/stories", stories.insert)
 router.post("/users", users.insert)
+router.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
 
 module.exports = router

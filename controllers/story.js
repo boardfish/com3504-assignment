@@ -15,7 +15,7 @@ exports.insert = function (req, res) {
   }
   try {
     var story = new Story({
-      user: storyData.user,
+      user: req.user,
       text: storyData.text,
       likes: [],
     })
@@ -101,6 +101,7 @@ exports.getAllStories = function (req, res) {
       .exec(function (err, stories) {
         utils.render(req, res, "index", 200, err, stories, {
           stories: stories,
+          user: (req.user || {})
         })
       })
   } catch (e) {
