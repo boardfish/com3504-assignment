@@ -15,10 +15,7 @@ initDatabase = () => {
   var dbPromise = idb.openDb("test-db1", 1, (upgradeDb) => {
     console.log("Making a new object store...");
     if (!upgradeDb.objectStoreNames.contains("stories")) {
-      var storiesOS = upgradeDb.createObjectStore("stories", {
-        keyPath: "_id",
-      });
-      storiesOS.createIndex("user", "user");
+      upgradeDb.createObjectStore("stories", { autoIncrement: true });
     }
   });
 
