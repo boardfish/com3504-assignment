@@ -1,14 +1,25 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 $theme-colors: (
   "1-star": rgb(244, 67, 54),
   "2-star": rgb(255, 87, 34),
   "3-star": rgb(255, 193, 7),
   "4-star": rgb(139, 195, 74),
   "5-star": #00AA55,
+  "primary": #069,
 );
+
+
+$body-bg: theme-color-level("primary", 5);
+$body-color: color-yiq($body-bg);
+$text-muted: #dee2e6;
 
 @import './node_modules/bootstrap/scss/bootstrap.scss';
 
 body {
+  color: $body-color;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -16,6 +27,16 @@ body {
 
 main {
   flex-grow: 1;
+}
+
+.card {
+  @extend .bg-dark;
+  @extend .border;
+}
+
+.navbar {
+  @extend .bg-dark;
+  @extend .navbar-dark;
 }
 
 .user-profile {
