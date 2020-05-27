@@ -27,10 +27,9 @@ initDatabase = () => {
 const getStoriesFromCache = () => {
   return initDatabase()
     .then(async (db) => {
-      var tx = db.transaction("stories", "readonly");
+      var tx = db.transaction("stories", "readwrite");
       var store = tx.objectStore("stories");
-      var stories = await store.getAll();
-      return stories;
+      return store.openCursor();
     })
     .catch((err) => console.log(err));
 };
@@ -89,8 +88,20 @@ $(document).ready(() => {
   })
     .then((response) => response.json())
     .then((data) => {
-      networkDataReceived = true;
-      renderStories(data);
+      if (!networkDataReceived) {
+        networkDataReceived = true;
+        renderStories(data);
+        alert("So here's where we'd try flinging up the cached stuff.");
+        getStoriesFromCache().then(function postDrafts(cursor) {
+          if (!cursor) { return }
+          return submitStory(cursor.value, 
+            () => { return },
+            cursor.delete().then(() => {
+              return cursor.continue().then(postDrafts)
+            })
+          )
+        }).then(loadStories)
+      }
     });
 
   // fetch cached data
