@@ -113,25 +113,29 @@ const staleWhileRevalidate = (e) => {
 };
 
 const cacheToIndexedDB = (e) => {
-  console.log("cachetoindexeddb");
   e.respondWith(
-    fetch(e.request).then(() => {
-      console.log(e.request);
-    })
+    fetch(e.request)
+      .then((response) => {
+        return response
+      })
+      .catch(() => {
+        console.log("Oh no, cache time.");
+      })
   );
 };
 
 self.addEventListener("fetch", (e) => {
   console.log(`[ServiceWorker] Fetch ${e.request.method} ${e.request.url}`);
-  if (e.request.method === "POST") {
-    return cacheToIndexedDB(e);
-  }
   const path = getPathFromURL(e.request.url);
   // https://stackoverflow.com/a/2896642
   switch (true) {
     // User sign-in - never cache
     case /^\/users\/sign_in$/.test(path):
+      console.log("User sign-in request")
       e.respondWith(fetch(e.request))
+      break;
+    case e.request.method === "POST":
+      cacheToIndexedDB(e);
       break;
     // All stories
     case /^\/$/.test(path):
