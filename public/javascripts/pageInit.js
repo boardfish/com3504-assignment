@@ -37,7 +37,7 @@ const getStoriesFromCache = () => {
 const loadStories = () => {
   $.ajax({
     // Base on current pathname, so /users/:id/stories only gets user stories
-    url: window.location.pathname,
+    url: window.location.pathname + '?json',
     success: (stories) => {
       renderStories(stories);
     },
@@ -81,7 +81,7 @@ $(document).ready(() => {
   var networkDataReceived = false;
 
   // fetch fresh data
-  var networkUpdate = fetch(window.location.pathname, {
+  var networkUpdate = fetch(window.location.pathname  + '?json', {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -106,7 +106,7 @@ $(document).ready(() => {
 
   // fetch cached data
   caches
-    .match(window.location.pathname)
+    .match(window.location.pathname + '?json')
     .then((response) => {
       if (!response) throw Error("No data");
       return response.json();
@@ -117,9 +117,9 @@ $(document).ready(() => {
         renderStories(data);
       }
     })
-    .catch(function (e) {
-      // we didn't get cached data, the network is our last hope:
-      return networkUpdate;
-    })
-    .catch(showErrorMessage);
+    // .catch(function (e) {
+    //   // we didn't get cached data, the network is our last hope:
+    //   return networkUpdate;
+    // })
+    // .catch(showErrorMessage);
 });
