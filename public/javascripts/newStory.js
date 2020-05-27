@@ -35,9 +35,8 @@ const submitStory = (data) => {
     `/stories`,
     data,
     () => {
-      console.log("Let's cache this bad boy.");
-      cacheStory(data),
-      alert("Cached it.")
+      cacheStory(data)
+      alert("Could not submit your post. It's been saved as a draft.")
     },
     (data) => {
       newStoryForm.slideUp(400, () =>
