@@ -15,34 +15,33 @@ db.once("open", function () {
   // we're connected!
   console.log("Database connected")
   User.insertMany(
-    inputData.users.map(({ userId }) => (
-      {
-        username: userId,
-        password: 'password',
-        email: `${userId}@sheffield.ac.uk`,
-        nickname: userId
-      }
-    )),
+    inputData.users.map(({ userId }) => ({
+      username: userId,
+      password: "password",
+      email: `${userId}@sheffield.ac.uk`,
+      nickname: userId,
+    })),
     (err) => {
-      if (err) { console.log(err) }
-      User.count({}, function(err, userCount) {
-        console.log( userCount );
+      if (err) {
+        console.log(err)
+      }
+      User.count({}, function (err, userCount) {
+        console.log(userCount)
         Promise.all(
           inputData.stories.map(async ({ userId, text }) => ({
             user: await User.findOne({ username: userId }),
-            text: text
+            text: text,
           }))
-        ).then(stories => {
-          Story.insertMany(
-            stories,
-            (err) => {
-              if (err) { console.log(err) }
-              Story.count({}, function(err, storyCount) {
-                console.log( storyCount );
-                return mongoose.disconnect()
-              })
+        ).then((stories) => {
+          Story.insertMany(stories, (err) => {
+            if (err) {
+              console.log(err)
             }
-          )
+            Story.count({}, function (err, storyCount) {
+              console.log(storyCount)
+              return mongoose.disconnect()
+            })
+          })
         })
       })
     }
