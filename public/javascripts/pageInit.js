@@ -25,21 +25,6 @@ initDatabase = () => {
   return dbPromise;
 };
 
-// Caches a story.
-cacheStory = (object) => {
-  initDatabase()
-    .then(async (db) => {
-      var tx = db.transaction("stories", "readwrite");
-      var store = tx.objectStore("stories");
-      const newValue = await store.add(object);
-      console.log("Could not post story. Caching...");
-      console.log(object);
-      console.log(newValue);
-      return tx.complete;
-    })
-    .catch((err) => console.log(err));
-};
-
 // Gets stories from the cache
 // TODO: try to post them.
 const getStoriesFromCache = () => {
