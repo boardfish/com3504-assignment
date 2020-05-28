@@ -37,6 +37,13 @@ $(document).ready(function () {
   // loadStories();
 });
 
+
+/**
+ * This function serializes a form passed in as a jQuery object (e.g.
+ * $("#form")) to a JS object of the form { name: value }. 
+ * @param {object} jQueryFormObject a form element in a jQuery object
+ * @returns {object} the serialized content of the form
+ */
 const serializeToJson = (jQueryFormObject) => {
   // from https://stackoverflow.com/a/24012884
   return jQueryFormObject.serializeArray().reduce((obj, item) => {

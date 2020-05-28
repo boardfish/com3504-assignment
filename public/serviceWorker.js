@@ -54,10 +54,24 @@ promiseAny = (promises) => {
   });
 };
 
+/**
+ * This function implements the cache and network race algorithm from
+ * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-and-network-race
+ * (i.e. the lecture slides).
+ * @param {FetchEvent} e a JS FetchEvent
+ * @returns {undefined} FetchEvent.respondWith() returns undefined.
+ */
 const cacheAndNetworkRace = (e) => {
   e.respondWith(promiseAny([caches.match(e.request), fetch(e.request)]));
 };
 
+/**
+ * This function implements the cache falling back to network algorithm from
+ * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-falling-back-to-network
+ * (i.e. the lecture slides).
+ * @param {FetchEvent} e a JS FetchEvent
+ * @returns {undefined} FetchEvent.respondWith() returns undefined.
+ */
 const cacheFallingBackToNetwork = (e) => {
   e.respondWith(
     caches.match(e.request).then((response) => {
@@ -66,6 +80,13 @@ const cacheFallingBackToNetwork = (e) => {
   );
 };
 
+/**
+ * This function implements the network falling back to cache algorithm from
+ * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
+ * (i.e. the lecture slides).
+ * @param {FetchEvent} e a JS FetchEvent
+ * @returns {undefined} FetchEvent.respondWith() returns undefined.
+ */
 const networkFallingBackToCache = (e) => {
   e.respondWith(
     caches.open(cacheName).then((cache) => {
@@ -79,6 +100,13 @@ const networkFallingBackToCache = (e) => {
   );
 };
 
+/**
+ * This function implements the cache then network algorithm from
+ * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
+ * (i.e. the lecture slides).
+ * @param {FetchEvent} e a JS FetchEvent
+ * @returns {undefined} FetchEvent.respondWith() returns undefined.
+ */
 const cacheThenNetwork = (e) => {
   e.respondWith(
     caches.open(cacheName).then((cache) => {
@@ -90,6 +118,13 @@ const cacheThenNetwork = (e) => {
   );
 }
 
+/**
+ * This function implements the generic fallback algorithm from
+ * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#generic-fallback
+ * (i.e. the lecture slides).
+ * @param {FetchEvent} e a JS FetchEvent
+ * @returns {undefined} FetchEvent.respondWith() returns undefined.
+ */
 const genericFallback = (e, fallback) => {
   e.respondWith(
     caches
@@ -103,6 +138,14 @@ const genericFallback = (e, fallback) => {
   );
 };
 
+
+/**
+ * This function implements part of the stale while revalidate algorithm from
+ * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#stale-while-revalidate
+ * (i.e. the lecture slides).
+ * @param {FetchEvent} e a JS FetchEvent
+ * @returns {undefined} FetchEvent.respondWith() returns undefined.
+ */
 const staleWhileRevalidate = (e) => {
   e.respondWith(
     caches.open(cacheName).then((cache) => {
@@ -120,14 +163,16 @@ const staleWhileRevalidate = (e) => {
 self.addEventListener("fetch", (e) => {
   console.log(`[ServiceWorker] Fetch ${e.request.method} ${e.request.url}`);
   const path = getPathFromURL(e.request.url);
-  // https://stackoverflow.com/a/2896642
+  // This switch decides which strategy to employ based on the path of the
+  // request
   switch (true) {
-    // User sign-in - never cache
+    // ServiceWorker not responsible for caching POSTs - that's down to AJAX
+    // failure callbacks 
     case e.request.method === "POST":
       console.log(`Not handling ${e.request.url}`)
       e.respondWith(fetch(e.request))
       break;
-    // All stories
+    // All stories: /, /stories, /user/:userId/stories
     case /^\/$/.test(path):
       networkFallingBackToCache(e);
       break;
@@ -145,12 +190,19 @@ self.addEventListener("fetch", (e) => {
       genericFallback(e, "/images/defaultProfilePic.png");
       break;
     default:
-      console.log("default: networkFallingBackToCache")
       networkFallingBackToCache(e);
       break;
   }
 });
 
+
+/**
+ * This function gets the path from a given URL by removing the protocol,
+ * hostname, and port.
+ * @param {string} url a URL
+ * @returns {string} url with the first occurrence of https://localhost:3000
+ * removed 
+ */
 const getPathFromURL = (url) => {
   return url.replace("https://localhost:3000", "");
 };

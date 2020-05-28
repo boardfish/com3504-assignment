@@ -22,8 +22,12 @@ initDatabase = () => {
   return dbPromise;
 };
 
-// Gets stories from the cache
-// TODO: try to post them.
+/**
+ * This function retrieves stories that were cached to IndexedDB. These stories
+ * came from previous failed attempts to post to the site. Rather than sending
+ * all stories, a cursor is returned.
+ * @returns {IDBCursorWithValue} A cursor for iterating on in another method.
+ */
 const getStoriesFromCache = () => {
   return initDatabase()
     .then(async (db) => {
@@ -34,6 +38,18 @@ const getStoriesFromCache = () => {
     .catch((err) => console.log(err));
 };
 
+
+/**
+ * This function sends a request to the JSON endpoint for the current page
+ * by setting the Content-Type header to application/json. This means that if
+ * the user is at /, they'll receive all stories, and if they're at a user's
+ * wall (/users/:userId/stories), they'll receive that user's stories.
+ * ?json is added to the path so that it is cached separately to the HTML
+ * request - the cache matches on pathnames too, but fortunately this solution
+ * helps there!
+ * If the request is successful, the stories are rendered. Otherwise, nothing
+ * happens under the assumption that it'll be handled elsewhere.
+ */
 const loadStories = () => {
   $.ajax({
     // Base on current pathname, so /users/:id/stories only gets user stories
@@ -49,6 +65,12 @@ const loadStories = () => {
   });
 };
 
+
+/**
+ * This function renders a JSON array of stories by appending them to the main
+ * element of the page. It fetches the HTML from the /stories/:storyId endpoint.
+ * @param {[object]} stories an array of stories
+ */
 const renderStories = (stories) => {
   stories.forEach((story) => {
     // Render if they aren't already rendered.
@@ -60,6 +82,10 @@ const renderStories = (stories) => {
   });
 };
 
+/**
+ * This function displays an error message and a prompt to refresh the page in
+ * case of any issues along the way.
+ */
 const showErrorMessage = () => {
   $("main.container")
     .addClass("d-flex flex-grow-1 align-items-center justify-content-center")

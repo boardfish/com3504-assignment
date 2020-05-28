@@ -1,5 +1,12 @@
 var Users = require("../models/users")
 
+/**
+ * This controller action creates a new user with the supplied JSON data. A
+ * username, password, email and nickname should be supplied.
+ * @param {Request} req a Request object
+ * @param {Response} res a Response object
+ * @memberof User
+ */
 exports.insert = function (req, res) {
   var userData = req.body
   if (userData == null) {
