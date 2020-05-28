@@ -1,3 +1,8 @@
+/**
+ * The Story model represents a post on the site. It has an author (user), text
+ * content, and associated ratings (likes).
+ */
+
 var mongoose = require("mongoose")
 
 var Schema = mongoose.Schema

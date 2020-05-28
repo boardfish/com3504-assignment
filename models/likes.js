@@ -1,3 +1,8 @@
+/**
+ * The Like model represents a rating on a story. It has a story and a rating
+ * from 0 to 4. This is represented as 1-5 in the frontend.
+ */
+
 const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema

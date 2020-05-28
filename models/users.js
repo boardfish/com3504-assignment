@@ -1,3 +1,9 @@
+/**
+ * The user model represents an account for a user of the site. They have a
+ * username, nickname, email address and password. The username and password are
+ * used to log in to the site.
+ */
+
 const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema
@@ -11,6 +17,9 @@ const User = new Schema({
   nickname: { type: String },
 })
 
+/**
+ * Before saving the user, their password must be hashed for security.
+ */
 // Can't use arrow functions here - they prevent binding `this`
 User.pre("save", function (next) {
   // only hash the password if it has been modified (or is new)
@@ -35,6 +44,13 @@ User.pre("save", function (next) {
   })
 })
 
+/**
+ * This function checks that a given password matches the one that the user
+ * originally set. It is used in Passport login events to verify inputs.
+ * @param {string} passwordInput the password input to compare with the user's
+ * @param {function} callback a callback function
+ * @returns {function} callback
+ */
 User.methods.passwordIsCorrect = function (passwordInput, callback) {
   bcrypt.compare(passwordInput, this.password, function (err, isMatch) {
     if (err) {
