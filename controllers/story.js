@@ -64,7 +64,7 @@ const findUserById = async (userId) => {
 }
 
 exports.getAllStories = async function (req, res) {
-  var user = { nickname: "Everyone"}
+  var user = { nickname: "Everyone" }
   if (req.params.userId) {
     user = await findUserById(req.params.userId)
     console.log(`User: ${user}`)
@@ -86,10 +86,19 @@ exports.getAllStories = async function (req, res) {
     .populate("user")
     .populate({ path: "likes", select: "vote -_id" })
     .exec(function (err, stories) {
-      utils.render(req, res, "index", 200, err, stories, {
-        stories: stories,
-        user: req.user || {},
-      }, `${user ? user.nickname : "Everyone"}'s Stories`)
+      utils.render(
+        req,
+        res,
+        "index",
+        200,
+        err,
+        stories,
+        {
+          stories: stories,
+          user: req.user || {},
+        },
+        `${user ? user.nickname : "Everyone"}'s Stories`
+      )
       return
     })
 }

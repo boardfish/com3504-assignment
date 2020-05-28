@@ -1,6 +1,15 @@
 var navbar = require("../views/data/navbar.json")
 
-exports.render = (req, res, viewName, status, err, jsonData, htmlData, titleAppend) => {
+exports.render = (
+  req,
+  res,
+  viewName,
+  status,
+  err,
+  jsonData,
+  htmlData,
+  titleAppend
+) => {
   if (err) {
     renderError(req, res, status === 200 ? 500 : status, err)
   } else {
@@ -36,7 +45,9 @@ const renderError = (req, res, status, err) => {
 
 const renderHtml = (req, res, viewName, err, data, titleAppend) => {
   res.render(viewName, {
-    title: `Nodethings${typeof titleAppend === 'undefined' ? "" : ` - ${titleAppend}`}`,
+    title: `Nodethings${
+      typeof titleAppend === "undefined" ? "" : ` - ${titleAppend}`
+    }`,
     path: req.path,
     navbar: navbar,
     ...data,
