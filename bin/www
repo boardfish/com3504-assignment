@@ -91,9 +91,9 @@ function onListening() {
   debug("Listening on " + bind)
 }
 
-process.on('SIGINT', function() {
+process.on("SIGINT", function () {
   console.log("Closing connection to database...")
   mongoose.connection.close()
   console.log("Goodbye!")
-  process.exit(1);
-});
+  process.exit(1)
+})
