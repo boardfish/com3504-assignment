@@ -4,7 +4,7 @@ var stories = require("../controllers/story")
 var passport = require("passport")
 
 /* GET users listing. */
-router.get("/:userId/stories", stories.getAllUserStories)
+router.get("/:userId/stories", stories.getAllStories)
 router.get("/me", (req, res) => res.send(JSON.stringify(req.user)))
 router.post(
   "/sign_in",

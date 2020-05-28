@@ -54,58 +54,39 @@ exports.getStory = function (req, res) {
   }
 }
 
-exports.getAllUserStories = function (req, res) {
+const findUserById = async (userId) => {
   try {
-    User.findById(req.params.userId, (err, user) => {
-      // If an invalid ID is passed...
-      if ((err || {}).name === "CastError") {
-        utils.render(
-          req,
-          res,
-          "friendly-error",
-          404,
-          "We couldn't find a user with that ID.",
-          {},
-          {}
-        )
-        // ...or a user with the valid ID doesn't exist
-      } else if (user === null) {
-        utils.render(
-          req,
-          res,
-          "friendly-error",
-          404,
-          "We couldn't find a user with that ID.",
-          {},
-          {}
-        )
-      }
-      Story.find({ user: req.params.userId }, "text")
-        .populate("user")
-        .populate({ path: "likes", select: "vote -_id" })
-        .exec(function (err, stories) {
-          utils.render(req, res, "index", 200, err, stories, {})
-        })
-    })
-  } catch (e) {
-    res.status(500).send("error " + e)
-    return
+    const user = await User.findById(userId)
+    return user === null
+  } catch {
+    return true
   }
 }
 
-exports.getAllStories = function (req, res) {
-  try {
-    Story.find({})
-      .populate("user")
-      .populate({ path: "likes", select: "vote -_id" })
-      .exec(function (err, stories) {
-        utils.render(req, res, "index", 200, err, stories, {
-          stories: stories,
-          user: req.user || {},
-        })
-      })
-  } catch (e) {
-    res.status(500).send("error " + e)
-    return
+exports.getAllStories = async function (req, res) {
+  if (req.params.userId) {
+    const returnEarly = await findUserById(req.params.userId)
+    if (returnEarly) {
+      utils.render(
+        req,
+        res,
+        "friendly-error",
+        404,
+        "We couldn't find a user with that ID.",
+        {},
+        {}
+      )
+      return
+    }
   }
+  Story.find(req.params.userId ? { user: req.params.userId } : {})
+    .populate("user")
+    .populate({ path: "likes", select: "vote -_id" })
+    .exec(function (err, stories) {
+      utils.render(req, res, "index", 200, err, stories, {
+        stories: stories,
+        user: req.user || {},
+      })
+      return
+    })
 }
