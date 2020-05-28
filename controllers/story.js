@@ -1,3 +1,6 @@
+/**
+ * @module story
+ */
 var Story = require("../models/story")
 var User = require("../models/users")
 var utils = require("./utils")
@@ -7,6 +10,7 @@ var utils = require("./utils")
  * authenticated user.
  * @param {Request} req a Request object
  * @param {Response} res a Response object
+ * @memberof story
  */
 exports.insert = function (req, res) {
   var storyData = req.body
@@ -43,6 +47,7 @@ exports.insert = function (req, res) {
  * that it should be appended to the page using jQuery.
  * @param {Request} req a Request object
  * @param {Response} res a Response object
+ * @memberof story
  */
 exports.getStory = function (req, res) {
   try {
@@ -84,6 +89,7 @@ const findUserById = async (userId) => {
  * wall). If the user could not be found, a 404 error response is returned.
  * @param {Request} req a Request object
  * @param {Response} res a Response object
+ * @memberof story
  */
 exports.getAllStories = async function (req, res) {
   var user = { nickname: "Everyone" }

@@ -2,6 +2,7 @@
  * The user model represents an account for a user of the site. They have a
  * username, nickname, email address and password. The username and password are
  * used to log in to the site.
+ * @module User
  */
 
 const mongoose = require("mongoose")
@@ -50,6 +51,7 @@ User.pre("save", function (next) {
  * @param {string} passwordInput the password input to compare with the user's
  * @param {function} callback a callback function
  * @returns {function} callback
+ * @memberof User
  */
 User.methods.passwordIsCorrect = function (passwordInput, callback) {
   bcrypt.compare(passwordInput, this.password, function (err, isMatch) {

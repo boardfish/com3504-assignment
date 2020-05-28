@@ -9,8 +9,8 @@ var navbar = require("../views/data/navbar.json")
  * @param {string} viewName the name of the view for the templating engine to render
  * @param {number} status a status code to return in the event of an (expected) error
  * @param {error} err an error
- * @param {object} jsonData the data to return if JSON was asked for
- * @param {object} htmlData data to pass to the templating engine in rendering HTML
+ * @param {Object} jsonData the data to return if JSON was asked for
+ * @param {Object} htmlData data to pass to the templating engine in rendering HTML
  * @param {string} titleAppend a string to append to the page title
  */
 exports.render = (
@@ -73,7 +73,7 @@ const renderError = (req, res, status, err) => {
  * @param {Response} res a Response object
  * @param {string} viewName the name of the view for the templating engine to render
  * @param {error} err an error
- * @param {object} data data to pass to the templating engine
+ * @param {Object} data data to pass to the templating engine
  * @param {string} titleAppend an optional string to append to the page title
  */
 const renderHtml = (req, res, viewName, err, data, titleAppend) => {
@@ -92,7 +92,7 @@ const renderHtml = (req, res, viewName, err, data, titleAppend) => {
  * to make this file's render function more readable.
  * @param {Response} res a Response object
  * @param {error} err an error
- * @param {object} data data to render to a JSON response
+ * @param {Object} data data to render to a JSON response
  */
 const renderJson = (res, err, data) => {
   res.send(data)
