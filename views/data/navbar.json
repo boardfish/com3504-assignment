@@ -1,4 +1,12 @@
 [{
-  "name": "Users",
-  "href": "/users"
-}]
+  "name": "Your Wall",
+  "href": "/users/me/stories",
+  "loggedInOnly": false
+},
+{
+  "name": "Log Out",
+  "href": "/logout",
+  "className": "btn btn-danger",
+  "loggedInOnly": true
+}
+]
