@@ -1,3 +1,9 @@
+/**
+ * Wrapper functions to make it easier to render HTML and JSON in the right
+ * circumstances with the right data across the app.
+ * @module Utils
+ */
+
 var navbar = require("../views/data/navbar.json")
 
 /**
@@ -12,6 +18,7 @@ var navbar = require("../views/data/navbar.json")
  * @param {Object} jsonData the data to return if JSON was asked for
  * @param {Object} htmlData data to pass to the templating engine in rendering HTML
  * @param {string} titleAppend a string to append to the page title
+ * @memberof Utils
  */
 exports.render = (
   req,
@@ -43,6 +50,7 @@ exports.render = (
  * @param {Response} res a Response object
  * @param {number} status a status code to return in the event of an (expected) error
  * @param {error} err an error
+ * @memberof Utils
  */
 const renderError = (req, res, status, err) => {
   if (!(typeof err === "string" || err instanceof String)) {
@@ -75,6 +83,7 @@ const renderError = (req, res, status, err) => {
  * @param {error} err an error
  * @param {Object} data data to pass to the templating engine
  * @param {string} titleAppend an optional string to append to the page title
+ * @memberof Utils
  */
 const renderHtml = (req, res, viewName, err, data, titleAppend) => {
   res.render(viewName, {
@@ -93,6 +102,7 @@ const renderHtml = (req, res, viewName, err, data, titleAppend) => {
  * @param {Response} res a Response object
  * @param {error} err an error
  * @param {Object} data data to render to a JSON response
+ * @memberof Utils
  */
 const renderJson = (res, err, data) => {
   res.send(data)

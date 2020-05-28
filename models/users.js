@@ -20,6 +20,7 @@ const User = new Schema({
 
 /**
  * Before saving the user, their password must be hashed for security.
+ * @memberof User
  */
 // Can't use arrow functions here - they prevent binding `this`
 User.pre("save", function (next) {

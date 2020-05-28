@@ -5,6 +5,7 @@ var Users = require("../models/users")
  * username, password, email and nickname should be supplied.
  * @param {Request} req a Request object
  * @param {Response} res a Response object
+ * @memberof User
  */
 exports.insert = function (req, res) {
   var userData = req.body

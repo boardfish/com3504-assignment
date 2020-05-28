@@ -8,6 +8,7 @@ var utils = require("./utils")
  * inclusive should also be supplied.
  * @param {Request} req a Request object
  * @param {Response} res a Response object
+ * @memberof Like
  */
 exports.insert = function (req, res) {
   var like = new Like({
