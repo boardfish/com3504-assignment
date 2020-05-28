@@ -23,9 +23,19 @@ exports.insert = function (req, res) {
     console.log("received + " + user)
 
     user.save(function (err, user) {
-      console.log(user._id)
       if (err) {
-        res.status(500).send("Invalid data!")
+        console.log(err.errors)
+        switch (true) {
+          case (err.code === 11000):
+            res.status(400).send("A user with this username exists already.")
+            break
+          case (err.name === 'ValidationError'):
+            res.status(400).send(`The following fields aren't valid: ${Object.values(err.errors).map(({message}) => message)}`)
+            break
+          default:
+            console.log(err.name)
+            res.status(500).send()
+        }
         return
       }
       res.setHeader("Content-Type", "application/json")

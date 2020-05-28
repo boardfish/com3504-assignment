@@ -12,7 +12,7 @@ const Schema = mongoose.Schema
 const bcrypt = require("bcrypt")
 
 const User = new Schema({
-  username: { type: String, required: true, max: 100 },
+  username: { type: String, required: true, unique : true, dropDups: true, max: 100 },
   password: { type: String, required: true, max: 100 },
   email: { type: String, required: true, max: 200 },
   nickname: { type: String },
