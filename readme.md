@@ -16,7 +16,19 @@ Install dependencies with `npm install`, then run `bin/www`.
 
 ### Docker environment
 
-Run `docker-compose up` to bring the web server live on `localhost:3000`.
+Run `docker-compose up` to bring the web server live on
+`https://localhost:3000`. It's necessary to specify `https` as this is needed
+for the service worker.
+
+### HTTPS configuration (Chrome)
+
+To add the root certificate, navigate to
+`chrome://settings/certificates`, switch to the **Authorities** tab, then select
+**Import**. Import `private/RootCA.crt`. You may then need to close and reopen
+Chrome. After this, if you navigate to `https://localhost:3000`, you should then
+see a lock icon before `localhost:3000` in your address bar. This means that
+your requests recognise a valid certificate, and the service worker should
+register.
 
 If dependencies change, run `docker-compose build` instead of `npm install`.
 This will install dependencies inside the containers that are used to run the
