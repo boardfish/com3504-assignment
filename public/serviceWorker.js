@@ -68,8 +68,13 @@ const cacheFallingBackToNetwork = (e) => {
 
 const networkFallingBackToCache = (e) => {
   e.respondWith(
-    fetch(e.request).catch(() => {
+    caches.open(cacheName).then((cache) => {
+      return fetch(e.request).then((response) => {
+        cache.put(e.request, response.clone());
+        return response;
+      }).catch(() => {
       return caches.match(e.request);
+    });
     })
   );
 };
@@ -119,28 +124,29 @@ self.addEventListener("fetch", (e) => {
   switch (true) {
     // User sign-in - never cache
     case e.request.method === "POST":
-      console.log("User sign-in request")
+      console.log(`Not handling ${e.request.url}`)
       e.respondWith(fetch(e.request))
       break;
     // All stories
     case /^\/$/.test(path):
-      cacheThenNetwork(e);
+      networkFallingBackToCache(e);
       break;
     // All stories
     case /^\/stories$/.test(path):
-      cacheThenNetwork(e);
+      networkFallingBackToCache(e);
       break;
     // User's stories
     // Hex ID regex from https://stackoverflow.com/a/20988543
     case /^\/user\/[0-9a-fA-F]{24}\/stories$/.test(path):
-      cacheThenNetwork(e);
+      networkFallingBackToCache(e);
       break;
     // Avatars
     case /ui-avatars.com/.test(path):
       genericFallback(e, "/images/defaultProfilePic.png");
       break;
     default:
-      staleWhileRevalidate(e);
+      console.log("default: networkFallingBackToCache")
+      networkFallingBackToCache(e);
       break;
   }
 });

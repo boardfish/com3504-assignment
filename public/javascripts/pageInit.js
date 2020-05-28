@@ -27,10 +27,9 @@ initDatabase = () => {
 const getStoriesFromCache = () => {
   return initDatabase()
     .then(async (db) => {
-      var tx = db.transaction("stories", "readonly");
+      var tx = db.transaction("stories", "readwrite");
       var store = tx.objectStore("stories");
-      var stories = await store.getAll();
-      return stories;
+      return store.openCursor();
     })
     .catch((err) => console.log(err));
 };
@@ -38,7 +37,7 @@ const getStoriesFromCache = () => {
 const loadStories = () => {
   $.ajax({
     // Base on current pathname, so /users/:id/stories only gets user stories
-    url: window.location.pathname,
+    url: window.location.pathname + '?json',
     success: (stories) => {
       renderStories(stories);
     },
@@ -82,20 +81,31 @@ $(document).ready(() => {
   var networkDataReceived = false;
 
   // fetch fresh data
-  var networkUpdate = fetch(window.location.pathname, {
+  var networkUpdate = fetch(window.location.pathname  + '?json', {
     headers: {
       'Content-Type': 'application/json'
     }
   })
     .then((response) => response.json())
     .then((data) => {
-      networkDataReceived = true;
-      renderStories(data);
+      if (!networkDataReceived) {
+        networkDataReceived = true;
+        alert("So here's where we'd try flinging up the cached stuff.");
+        getStoriesFromCache().then(function postDrafts(cursor) {
+          if (!cursor) { return }
+          return submitStory(cursor.value, 
+            () => { return },
+            cursor.delete().then(() => {
+              return cursor.continue().then(postDrafts)
+            })
+          )
+        }).then(loadStories)
+      }
     });
 
   // fetch cached data
   caches
-    .match(window.location.pathname)
+    .match(window.location.pathname + '?json')
     .then((response) => {
       if (!response) throw Error("No data");
       return response.json();
@@ -106,9 +116,9 @@ $(document).ready(() => {
         renderStories(data);
       }
     })
-    .catch(function (e) {
-      // we didn't get cached data, the network is our last hope:
-      return networkUpdate;
-    })
-    .catch(showErrorMessage);
+    // .catch(function (e) {
+    //   // we didn't get cached data, the network is our last hope:
+    //   return networkUpdate;
+    // })
+    // .catch(showErrorMessage);
 });

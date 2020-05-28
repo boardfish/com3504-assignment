@@ -26,29 +26,15 @@ cacheStory = (object) => {
     .catch((err) => console.log(err));
 };
 
-
 // We need jQuery smarts for seralizeArray
 const newStoryForm = $("form#newStory");
 
-const submitStory = (data) => {
-  sendAjaxQuery(
-    `/stories`,
-    data,
-    () => {
-      cacheStory(data)
-      alert("Could not submit your post. It's been saved as a draft.")
-    },
-    (data) => {
-      newStoryForm.slideUp(400, () =>
-        newStoryForm.trigger("reset").slideDown()
-      );
-      loadStories();
-    }
-  );
+const submitStory = (data, failureCallback, successCallback) => {
+  sendAjaxQuery(`/stories`, data, failureCallback, successCallback);
 };
 
 $(document).ready(function () {
-  loadStories()
+  // loadStories();
 });
 
 const serializeToJson = (jQueryFormObject) => {
@@ -61,5 +47,18 @@ const serializeToJson = (jQueryFormObject) => {
 
 newStoryForm.submit((e) => {
   e.preventDefault();
-  submitStory(JSON.stringify(serializeToJson(newStoryForm)));
+  var data = JSON.stringify(serializeToJson(newStoryForm));
+  submitStory(
+    data,
+    () => {
+      cacheStory(data);
+      alert("Could not submit your post. It's been saved as a draft.");
+    },
+    (data) => {
+      newStoryForm.slideUp(400, () =>
+        newStoryForm.trigger("reset").slideDown()
+      );
+      loadStories();
+    }
+  );
 });
