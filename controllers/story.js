@@ -64,7 +64,7 @@ const findUserById = async (userId) => {
 }
 
 exports.getAllStories = async function (req, res) {
-  var user = { nickname: "Everyone"}
+  var user = { nickname: "Everyone" }
   var idForLookup = req.params.userId
   if (req.params.userId) {
     idForLookup = req.params.userId === "me" ? req.user._id : req.params.userId
@@ -89,10 +89,19 @@ exports.getAllStories = async function (req, res) {
     .populate("user")
     .populate({ path: "likes", select: "vote -_id" })
     .exec(function (err, stories) {
-      utils.render(req, res, "index", 200, err, stories, {
-        stories: stories,
-        user: req.user || {},
-      }, `${user.nickname}'s Stories`)
+      utils.render(
+        req,
+        res,
+        "index",
+        200,
+        err,
+        stories,
+        {
+          stories: stories,
+          user: req.user || {},
+        },
+        `${user.nickname}'s Stories`
+      )
       return
     })
 }
