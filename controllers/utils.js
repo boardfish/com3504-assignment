@@ -1,6 +1,6 @@
 var navbar = require("../views/data/navbar.json")
 
-exports.render = (req, res, viewName, status, err, jsonData, htmlData) => {
+exports.render = (req, res, viewName, status, err, jsonData, htmlData, titleAppend) => {
   if (err) {
     renderError(req, res, status === 200 ? 500 : status, err)
   } else {
@@ -9,7 +9,7 @@ exports.render = (req, res, viewName, status, err, jsonData, htmlData) => {
         renderJson(res, err, jsonData)
         break
       default:
-        renderHtml(req, res, viewName, err, htmlData)
+        renderHtml(req, res, viewName, err, htmlData, titleAppend)
     }
   }
 }
@@ -34,9 +34,9 @@ const renderError = (req, res, status, err) => {
   }
 }
 
-const renderHtml = (req, res, viewName, err, data) => {
+const renderHtml = (req, res, viewName, err, data, titleAppend) => {
   res.render(viewName, {
-    title: "Express",
+    title: `Nodethings${typeof titleAppend === 'undefined' ? "" : ` - ${titleAppend}`}`,
     path: req.path,
     navbar: navbar,
     ...data,

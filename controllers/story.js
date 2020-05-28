@@ -57,16 +57,18 @@ exports.getStory = function (req, res) {
 const findUserById = async (userId) => {
   try {
     const user = await User.findById(userId)
-    return user === null
+    return user
   } catch {
-    return true
+    return null
   }
 }
 
 exports.getAllStories = async function (req, res) {
+  var user = { nickname: "Everyone"}
   if (req.params.userId) {
-    const returnEarly = await findUserById(req.params.userId)
-    if (returnEarly) {
+    user = await findUserById(req.params.userId)
+    console.log(`User: ${user}`)
+    if (user === null) {
       utils.render(
         req,
         res,
@@ -79,6 +81,7 @@ exports.getAllStories = async function (req, res) {
       return
     }
   }
+  console.log(`User: ${user}`)
   Story.find(req.params.userId ? { user: req.params.userId } : {})
     .populate("user")
     .populate({ path: "likes", select: "vote -_id" })
@@ -86,7 +89,7 @@ exports.getAllStories = async function (req, res) {
       utils.render(req, res, "index", 200, err, stories, {
         stories: stories,
         user: req.user || {},
-      })
+      }, `${user ? user.nickname : "Everyone"}'s Stories`)
       return
     })
 }
