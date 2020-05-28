@@ -22,9 +22,9 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <% navbar.forEach(({ name, href }) => { %>
+        <% navbar.filter(item => !item.loggedInOnly).forEach(({ name, href, className }) => { %>
           <li class="nav-item <%= href === path ? 'active' : '' %>">
-            <a class="nav-link" href="<%= href %>">
+            <a class="nav-link <%= className || '' %>" href="<%= href %>">
               <%= name %>
               <% if (href === path) { %>
                 <span class="sr-only">(current)</span>
@@ -34,7 +34,17 @@
         <% }) %>
       </ul>
       <ul class="navbar-nav">
-        <!-- TODO: User signed in or out, avatar -->
+        <span class="navbar-text mr-3"><%= user.nickname %></span>
+        <% navbar.filter(item => item.loggedInOnly && !(user._id === undefined)).forEach(({ name, href, className }) => { %>
+          <li class="nav-item <%= href === path ? 'active' : '' %>">
+            <a class="nav-link <%= className || '' %>" href="<%= href %>">
+              <%= name %>
+              <% if (href === path) { %>
+                <span class="sr-only">(current)</span>
+              <% } %>
+            </a>
+          </li>
+        <% }) %>
       </ul>
     </div>
   </nav>
