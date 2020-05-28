@@ -22,8 +22,12 @@ initDatabase = () => {
   return dbPromise;
 };
 
-// Gets stories from the cache
-// TODO: try to post them.
+/**
+ * This function retrieves stories that were cached to IndexedDB. These stories
+ * came from previous failed attempts to post to the site. Rather than sending
+ * all stories, a cursor is returned.
+ * @returns {IDBCursorWithValue} A cursor for iterating on in another method.
+ */
 const getStoriesFromCache = () => {
   return initDatabase()
     .then(async (db) => {
@@ -49,6 +53,12 @@ const loadStories = () => {
   });
 };
 
+
+/**
+ * This function renders a JSON array of stories by appending them to the main
+ * element of the page. It fetches the HTML from the /stories/:storyId endpoint.
+ * @param {[object]} stories an array of stories
+ */
 const renderStories = (stories) => {
   stories.forEach((story) => {
     // Render if they aren't already rendered.
@@ -60,6 +70,10 @@ const renderStories = (stories) => {
   });
 };
 
+/**
+ * This function displays an error message and a prompt to refresh the page in
+ * case of any issues along the way.
+ */
 const showErrorMessage = () => {
   $("main.container")
     .addClass("d-flex flex-grow-1 align-items-center justify-content-center")
