@@ -3,6 +3,7 @@ var router = express.Router()
 
 var likes = require("../controllers/likes")
 var stories = require("../controllers/story")
+var recommends = require("../usersStoriesAndRatings")
 
 /* GET home page. */
 router.get("/", stories.getAllStories)
