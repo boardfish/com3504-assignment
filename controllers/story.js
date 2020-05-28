@@ -2,12 +2,12 @@ var Story = require("../models/story")
 var User = require("../models/users")
 var utils = require("./utils")
 
-const consolidateRatings = (ratings) => {
-  var consolidatedRatings = Array(5).fill(0)
-  ratings.map((like) => like.vote).forEach((x) => (consolidatedRatings[x] += 1))
-  return consolidatedRatings
-}
-
+/**
+ * This controller action creates a new story against the currently
+ * authenticated user.
+ * @param {Request} req a Request object
+ * @param {Response} res a Response object
+ */
 exports.insert = function (req, res) {
   var storyData = req.body
   if (storyData == null) {
@@ -36,6 +36,14 @@ exports.insert = function (req, res) {
   }
 }
 
+/**
+ * This controller action retrieves just one story by its ID, including the
+ * accompanying user and rating data. If HTML is requested, note that a full
+ * view is not returned - only the HTML data for the story div is returned, such
+ * that it should be appended to the page using jQuery.
+ * @param {Request} req a Request object
+ * @param {Response} res a Response object
+ */
 exports.getStory = function (req, res) {
   try {
     Story.findById(req.params.storyId)
@@ -54,6 +62,13 @@ exports.getStory = function (req, res) {
   }
 }
 
+/**
+ * Finds a user by their ID. In the event of an error (particularly defending
+ * against CastError here), null is returned. This is a wrapper for
+ * User.findById that handles invalid IDs (albeit heavy-handedly).
+ * @param {string} userId the ID of a user in the database
+ * @returns {Object} a user, or null if no user exists with that ID
+ */
 const findUserById = async (userId) => {
   try {
     const user = await User.findById(userId)
@@ -63,6 +78,13 @@ const findUserById = async (userId) => {
   }
 }
 
+/**
+ * This controller action retrieves either all stories on the site or, if the
+ * parameter userId is specified on the request, one user's stories (i.e. their
+ * wall). If the user could not be found, a 404 error response is returned.
+ * @param {Request} req a Request object
+ * @param {Response} res a Response object
+ */
 exports.getAllStories = async function (req, res) {
   var user = { nickname: "Everyone" }
   var idForLookup = req.params.userId
