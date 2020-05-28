@@ -3,13 +3,14 @@ var navbar = require("../views/data/navbar.json")
 exports.render = (req, res, viewName, status, err, jsonData, htmlData) => {
   if (err) {
     renderError(req, res, status === 200 ? 500 : status, err)
-    return
-  }
-  switch (req.header("Content-Type")) {
-    case "application/json":
-      return renderJson(res, err, jsonData)
-    default:
-      return renderHtml(req, res, viewName, err, htmlData)
+  } else {
+    switch (req.header("Content-Type")) {
+      case "application/json":
+        renderJson(res, err, jsonData)
+        break
+      default:
+        renderHtml(req, res, viewName, err, htmlData)
+    }
   }
 }
 
@@ -19,12 +20,12 @@ const renderError = (req, res, status, err) => {
   }
   switch (req.header("Content-Type")) {
     case "application/json":
-      res.status(status || 500).send(JSON.stringify({ error: err }))
-      return
+      res.send({ error: err })
+      break
     default:
-      res.status(status || 500).render("friendly-error", {
+      res.render("friendly-error", {
         error: err,
-        status: status,
+        status: status || 500,
         title: "Oops!",
         path: req.path,
         navbar: navbar,
