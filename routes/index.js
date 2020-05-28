@@ -1,3 +1,7 @@
+/**
+ * Please see the OpenAPI documentation for documentation on routes.
+ */
+
 var express = require("express")
 var router = express.Router()
 var navbar = require("../views/data/navbar.json")
