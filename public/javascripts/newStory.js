@@ -11,6 +11,22 @@
 //   });
 // };
 
+// Caches a story.
+cacheStory = (object) => {
+  initDatabase()
+    .then(async (db) => {
+      var tx = db.transaction("stories", "readwrite");
+      var store = tx.objectStore("stories");
+      const newValue = await store.add(object);
+      console.log("Could not post story. Caching...");
+      console.log(object);
+      console.log(newValue);
+      return tx.complete;
+    })
+    .catch((err) => console.log(err));
+};
+
+
 // We need jQuery smarts for seralizeArray
 const newStoryForm = $("form#newStory");
 
@@ -19,7 +35,8 @@ const submitStory = (data) => {
     `/stories`,
     data,
     () => {
-      alert("We couldn't submit your story. Please try again.");
+      cacheStory(data)
+      alert("Could not submit your post. It's been saved as a draft.")
     },
     (data) => {
       newStoryForm.slideUp(400, () =>

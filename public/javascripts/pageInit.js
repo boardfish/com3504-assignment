@@ -15,29 +15,11 @@ initDatabase = () => {
   var dbPromise = idb.openDb("test-db1", 1, (upgradeDb) => {
     console.log("Making a new object store...");
     if (!upgradeDb.objectStoreNames.contains("stories")) {
-      var storiesOS = upgradeDb.createObjectStore("stories", {
-        keyPath: "_id",
-      });
-      storiesOS.createIndex("user", "user");
+      upgradeDb.createObjectStore("stories", { autoIncrement: true });
     }
   });
 
   return dbPromise;
-};
-
-// Caches a story.
-cacheStory = (object) => {
-  initDatabase()
-    .then(async (db) => {
-      var tx = db.transaction("stories", "readwrite");
-      var store = tx.objectStore("stories");
-      const newValue = await store.add(object);
-      console.log("Could not post story. Caching...");
-      console.log(object);
-      console.log(newValue);
-      return tx.complete;
-    })
-    .catch((err) => console.log(err));
 };
 
 // Gets stories from the cache
