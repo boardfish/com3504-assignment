@@ -5,7 +5,12 @@ var User = require("./models/users")
 var Story = require("./models/story")
 var Likes = require("./models/likes")
 
-// Takes a story's text and returns the first matching ID
+/**
+ * Takes a story's text and returns the first matching ID.
+ * @param {string} id the id of a story in the JSON file
+ * @returns {Object} the JSON object from the stories array in that file, with
+ * its storyId equal to id.
+ */
 const findStoryById = (id) =>
   inputData.stories.find((story) => story.storyId === id)
 
