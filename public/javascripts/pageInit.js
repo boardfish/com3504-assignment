@@ -38,6 +38,18 @@ const getStoriesFromCache = () => {
     .catch((err) => console.log(err));
 };
 
+
+/**
+ * This function sends a request to the JSON endpoint for the current page
+ * by setting the Content-Type header to application/json. This means that if
+ * the user is at /, they'll receive all stories, and if they're at a user's
+ * wall (/users/:userId/stories), they'll receive that user's stories.
+ * ?json is added to the path so that it is cached separately to the HTML
+ * request - the cache matches on pathnames too, but fortunately this solution
+ * helps there!
+ * If the request is successful, the stories are rendered. Otherwise, nothing
+ * happens under the assumption that it'll be handled elsewhere.
+ */
 const loadStories = () => {
   $.ajax({
     // Base on current pathname, so /users/:id/stories only gets user stories
