@@ -16,4 +16,8 @@ router.get("/logout", (req, res) => {
   res.redirect("/")
 })
 
+router.get("/new", function (req, res) {
+  users.insertTest(req,res)
+})
+
 module.exports = router
