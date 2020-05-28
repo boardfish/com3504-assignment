@@ -145,7 +145,8 @@ self.addEventListener("fetch", (e) => {
       genericFallback(e, "/images/defaultProfilePic.png");
       break;
     default:
-      staleWhileRevalidate(e);
+      console.log("default: networkFallingBackToCache")
+      networkFallingBackToCache(e);
       break;
   }
 });

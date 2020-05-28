@@ -90,7 +90,6 @@ $(document).ready(() => {
     .then((data) => {
       if (!networkDataReceived) {
         networkDataReceived = true;
-        renderStories(data);
         alert("So here's where we'd try flinging up the cached stuff.");
         getStoriesFromCache().then(function postDrafts(cursor) {
           if (!cursor) { return }
