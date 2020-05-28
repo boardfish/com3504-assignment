@@ -26,11 +26,17 @@ exports.insert = function (req, res) {
       if (err) {
         console.log(err.errors)
         switch (true) {
-          case (err.code === 11000):
+          case err.code === 11000:
             res.status(400).send("A user with this username exists already.")
             break
-          case (err.name === 'ValidationError'):
-            res.status(400).send(`The following fields aren't valid: ${Object.values(err.errors).map(({message}) => message)}`)
+          case err.name === "ValidationError":
+            res
+              .status(400)
+              .send(
+                `The following fields aren't valid: ${Object.values(
+                  err.errors
+                ).map(({ message }) => message)}`
+              )
             break
           default:
             console.log(err.name)
