@@ -36,6 +36,9 @@ app.
 
 ## Seeding
 
-Run `node seeder.js` to seed the database. If you're using Docker, bring up the
-database in the background with `docker-compose up -d db`, then call
-`docker-compose run --rm web seeder.js`.
+Run `node seeder.js` to seed the database with the users, stories, and ratings
+from `usersStoriesAndRatings.json`. Note that the structure is important - it
+should reflect the structure that's already in that file. (That means if you're
+marking this, it's safe to replace it with your JSON file!) If you're using
+Docker, bring up the database in the background with `docker-compose up -d db`,
+then call `docker-compose run --rm web seeder.js`.
