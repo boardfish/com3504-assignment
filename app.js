@@ -7,6 +7,8 @@ var passport = require("passport")
 var session = require("express-session")
 var User = require("./models/users")
 var LocalStrategy = require("passport-local").Strategy
+const bodyParser= require('body-parser')
+const multer = require('multer');
 
 var indexRouter = require("./routes/index")
 var usersRouter = require("./routes/users")
@@ -34,6 +36,8 @@ app.use(
     debug: true,
   })
 )
+
+app.use(bodyParser.urlencoded({extended: true}))
 
 // Authentication - Passport
 passport.use(
