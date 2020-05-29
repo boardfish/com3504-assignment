@@ -17,9 +17,64 @@ const signIn = (data) => {
   );
 };
 
+const signUp = (data) => {
+  sendAjaxQuery(
+    `/users`,
+    data,
+    () => {
+      alert("We couldn't sign you up. Please try again.");
+    },
+    () => {
+      alert("You've made an account! Please re-enter your details to sign in.");
+      setFormTo("logIn");
+    }
+  );
+};
+
+const pageHeadingToCamelCase = (headingText) =>
+  headingText
+    .toLowerCase()
+    .split("")
+    .map((char, index) => {
+      return (index === (headingText.indexOf(" ") + 1) ? char.toUpperCase() : char)
+    }
+    )
+    .join("")
+    .replace(" ", "");
+
+const setFormTo = (state) => {
+  signInForm.trigger("reset");
+  const currentState = pageHeadingToCamelCase(signInForm.find("h2").text());
+  console.log(state, currentState)
+  if (currentState === state) { return }
+  if (state === "logIn" || (currentState === "signUp" && state !== currentState)) {
+    $("#signUp").slideUp();
+    $("#signUp").find("button").text("Log In");
+    $(signInForm).find("#formToggleButton").text("Not a member?")
+    $(signInForm).find("h2").text("Log In")
+  } else {
+    $("#signUp").slideDown();
+    $("#signUp").find("button").text("Sign Up");
+    $(signInForm).find("#formToggleButton").text("Already a member?")
+    $(signInForm).find("h2").text("Sign Up")
+  }
+};
+
 const signInForm = $("form#signIn");
 
 signInForm.submit((e) => {
   e.preventDefault();
-  signIn(JSON.stringify(serializeToJson(signInForm)));
+  var formContent = serializeToJson(signInForm);
+  if (formContent.email === "" || formContent.nickname === "") {
+    signIn(JSON.stringify(formContent));
+  } else {
+    signUp(JSON.stringify(formContent));
+  }
 });
+
+$(signInForm)
+  .find("#formToggleButton")
+  .click((e) => {
+    e.preventDefault();
+    setFormTo("toggle");
+  });
