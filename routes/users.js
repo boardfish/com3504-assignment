@@ -10,7 +10,7 @@ router.get("/:userId/stories", stories.getAllStories)
 router.get("/me", (req, res) => res.send(JSON.stringify(req.user)))
 router.post(
   "/sign_in",
-  passport.authenticate("local", { successRedirect: "/users/me" })
+  passport.authenticate("local", { successRedirect: "/users/me/stories" })
 )
 
 module.exports = router

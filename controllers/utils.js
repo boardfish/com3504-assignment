@@ -67,7 +67,7 @@ const renderError = (req, res, status, err) => {
         title: "Oops!",
         path: req.path,
         navbar: navbar,
-        user: req.user,
+        user: req.user || {},
       })
       return
   }
