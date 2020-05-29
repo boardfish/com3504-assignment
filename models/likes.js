@@ -10,6 +10,7 @@ const Schema = mongoose.Schema
 
 const Like = new Schema({
   story: { type: Schema.Types.ObjectID, required: true, ref: "Story" },
+  user: { type: Schema.Types.ObjectID, required: true, ref: "User" },
   vote: { type: Number, required: true, max: 4, min: 0 },
 })
 

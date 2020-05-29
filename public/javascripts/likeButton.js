@@ -16,7 +16,7 @@ const submitLike = (storyId, vote) => {
     `/stories/${storyId}/rate/${vote}`,
     {},
     () => {
-      alert("Error");
+      alert("Could not submit your vote.");
     },
     () => {
       $(`span.fivestars[data-story-id=${storyId}]`).removeClass(
