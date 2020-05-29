@@ -21,10 +21,9 @@
     </div>
   </div>
   <button type="submit" class="btn btn-primary">Sign Up</button>
-  <a id="formToggleButton" class="btn btn-secondary">Already a member?</button>
+  <a id="formToggleButton" class="btn btn-secondary">Already a member?</a>
 </form>
 <% } else { %>
-<a href="/logout" class="btn btn-danger">Logout</a>
 <%- include("components/newStory") %>
 <% } %>
 <%- include("layouts/foot") %>
