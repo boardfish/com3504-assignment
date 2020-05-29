@@ -95,7 +95,10 @@ exports.getAllStories = async function (req, res) {
   var user = { nickname: "Everyone" }
   var idForLookup = req.params.userId
   if (req.params.userId) {
-    idForLookup = req.params.userId === "me" && req.isAuthenticated() ? req.user._id : req.params.userId
+    idForLookup =
+      req.params.userId === "me" && req.isAuthenticated()
+        ? req.user._id
+        : req.params.userId
     console.log(`Id for lookup: ${idForLookup}`)
     user = await findUserById(idForLookup)
     console.log(`User: ${user}`)
