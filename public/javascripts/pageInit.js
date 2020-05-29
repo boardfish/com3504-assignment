@@ -65,14 +65,14 @@ const loadStories = () => {
         networkDataReceived = true;
         getStoriesFromCache().then(function postDrafts(cursor) {
           console.log(data)
-          if (!cursor) { return data }
+          if (!cursor) { console.log(data); return renderStories(data) }
           return submitStory(cursor.value, 
-            () => { return data },
+            () => { renderStories(data) },
             cursor.delete().then(() => {
-              return cursor.continue().then(postDrafts)
+              return cursor.continue().then(postDrafts).then((data) => renderStories(data))
             })
           )
-        }).then((data) => renderStories(data))
+        })
       }
     });
 
