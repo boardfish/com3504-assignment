@@ -1,6 +1,7 @@
 var Story = require("../models/story")
 var User = require("../models/users")
 var utils = require("./utils")
+var io = require("socket.io").listen(4000)
 
 /**
  * This controller action creates a new story against the currently
@@ -31,6 +32,7 @@ exports.insert = function (req, res) {
       }
       res.setHeader("Content-Type", "application/json")
       res.send(JSON.stringify(story))
+      io.sockets.emit('newStory', story);
     })
   } catch (e) {
     res.status(500).send("error " + e)
