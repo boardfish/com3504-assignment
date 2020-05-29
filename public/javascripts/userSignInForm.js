@@ -49,12 +49,12 @@ const setFormTo = (state) => {
   if (currentState === state) { return }
   if (state === "logIn" || (currentState === "signUp" && state !== currentState)) {
     $("#signUp").slideUp();
-    $("#signUp").find("button").text("Log In");
+    $(signInForm).find("button").text("Log In");
     $(signInForm).find("#formToggleButton").text("Not a member?")
     $(signInForm).find("h2").text("Log In")
   } else {
     $("#signUp").slideDown();
-    $("#signUp").find("button").text("Sign Up");
+    $(signInForm).find("button").text("Sign Up");
     $(signInForm).find("#formToggleButton").text("Already a member?")
     $(signInForm).find("h2").text("Sign Up")
   }
