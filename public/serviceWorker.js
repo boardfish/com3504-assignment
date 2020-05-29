@@ -173,17 +173,8 @@ self.addEventListener("fetch", (e) => {
       e.respondWith(fetch(e.request))
       break;
     // All stories: /, /stories, /user/:userId/stories
-    case /^\/$/.test(path):
-      networkFallingBackToCache(e);
-      break;
-    // All stories
-    case /^\/stories$/.test(path):
-      networkFallingBackToCache(e);
-      break;
-    // User's stories
-    // Hex ID regex from https://stackoverflow.com/a/20988543
-    case /^\/user\/[0-9a-fA-F]{24}\/stories$/.test(path):
-      networkFallingBackToCache(e);
+    case /\?json$/.test(path):
+      cacheThenNetwork(e);
       break;
     // Avatars
     case /ui-avatars.com/.test(path):

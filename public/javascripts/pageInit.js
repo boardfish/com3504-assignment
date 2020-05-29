@@ -51,18 +51,49 @@ const getStoriesFromCache = () => {
  * happens under the assumption that it'll be handled elsewhere.
  */
 const loadStories = () => {
-  $.ajax({
-    // Base on current pathname, so /users/:id/stories only gets user stories
-    url: window.location.pathname + '?json',
-    success: (stories) => {
-      renderStories(stories);
-    },
-    error: () => {
-      // Handled by cacheThenNetwork
-    },
-    contentType: "application/json",
-    dataType: "json",
-  });
+  var networkDataReceived = false;
+
+  // fetch fresh data
+  var networkUpdate = fetch(window.location.pathname  + '?json', {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!networkDataReceived) {
+        networkDataReceived = true;
+        getStoriesFromCache().then(function postDrafts(cursor) {
+          console.log(data)
+          if (!cursor) { return data }
+          return submitStory(cursor.value, 
+            () => { return data },
+            cursor.delete().then(() => {
+              return cursor.continue().then(postDrafts)
+            })
+          )
+        }).then((data) => renderStories(data))
+      }
+    });
+
+  // fetch cached data
+  caches
+    .match(window.location.pathname + '?json')
+    .then((response) => {
+      if (!response) throw Error("No data");
+      return response.json();
+    })
+    .then((data) => {
+      // don't overwrite newer network data
+      setTimeout(() => { if (!networkDataReceived) {
+        renderStories(data);
+      }}, 300)
+    })
+    .catch(function (e) {
+      // we didn't get cached data, the network is our last hope:
+      return networkUpdate;
+    })
+    .catch(showErrorMessage);
 };
 
 
@@ -104,46 +135,5 @@ const showErrorMessage = () => {
 
 $(document).ready(() => {
   registerServiceWorker();
-  var networkDataReceived = false;
-
-  // fetch fresh data
-  var networkUpdate = fetch(window.location.pathname  + '?json', {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (!networkDataReceived) {
-        networkDataReceived = true;
-        getStoriesFromCache().then(function postDrafts(cursor) {
-          if (!cursor) { return }
-          return submitStory(cursor.value, 
-            () => { return },
-            cursor.delete().then(() => {
-              return cursor.continue().then(postDrafts)
-            })
-          )
-        }).then(loadStories)
-      }
-    });
-
-  // fetch cached data
-  caches
-    .match(window.location.pathname + '?json')
-    .then((response) => {
-      if (!response) throw Error("No data");
-      return response.json();
-    })
-    .then((data) => {
-      // don't overwrite newer network data
-      if (!networkDataReceived) {
-        renderStories(data);
-      }
-    })
-    // .catch(function (e) {
-    //   // we didn't get cached data, the network is our last hope:
-    //   return networkUpdate;
-    // })
-    // .catch(showErrorMessage);
+  loadStories()
 });
