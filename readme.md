@@ -42,3 +42,27 @@ should reflect the structure that's already in that file. (That means if you're
 marking this, it's safe to replace it with your JSON file!) If you're using
 Docker, bring up the database in the background with `docker-compose up -d db`,
 then call `docker-compose run --rm web seeder.js`.
+
+## Checkout testing
+
+These are the steps we have run through in order to test the application on our
+end:
+
+1. Make an account using the form.
+1. Log in with the account.
+1. Create a post.
+1. Rate the post.
+1. Refresh the page to see that the rating was applied. (It's submitted with
+   AJAX, but isn't updated in the UI until a refresh.)
+1. Open another browser.
+1. Create another account.
+1. Log in with it.
+1. Create a post.
+1. Check it showed up on the other browser. (Socket.IO)
+1. Click on one of the users and make sure their wall only has their posts on it.
+1. Go offline and make sure the page renders.
+1. Make a post while offline (expect an alert), then come back online and
+   refresh - it should submit when you do.
+1. Check that /users/stories/me works as expected when authenticated (shows only
+   your posts)) and when not authenticated (404s and returns a friendly error
+   page).
