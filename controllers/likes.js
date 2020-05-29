@@ -17,7 +17,7 @@ exports.insert = function (req, res) {
     user: req.user._id
   }
   console.log("received: " + data)
-  Like.findOneAndUpdate({ user: req.user._id}, data, {
+  Like.findOneAndUpdate({ user: req.user._id, story: req.params.storyId }, data, {
     new: true, upsert: true
   }, function (err, like) {
     if (err) {
