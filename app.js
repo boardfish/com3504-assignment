@@ -67,9 +67,9 @@ passport.deserializeUser(function (id, done) {
     done(err, user)
   })
 })
-app.use(session({ secret: "nodethings",
-                  resave: true,
-                  saveUninitialized: true}))
+app.use(
+  session({ secret: "nodethings", resave: true, saveUninitialized: true })
+)
 app.use(passport.initialize())
 app.use(passport.session())
 
