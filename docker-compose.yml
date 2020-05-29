@@ -8,5 +8,6 @@ services:
       - SERVER_HOST="localhost:3000"
     ports:
       - "3000:3000"
+      - "4000:4000"
   db:
     image: 'mongo'

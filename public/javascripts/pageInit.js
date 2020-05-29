@@ -136,4 +136,9 @@ const showErrorMessage = () => {
 $(document).ready(() => {
   registerServiceWorker();
   loadStories()
+  var socket = io('http://localhost:4000');
+  socket.on('newStory', function(data) {
+    console.log("New story")
+    renderStories([data])
+  });
 });
