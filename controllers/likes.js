@@ -14,6 +14,7 @@ exports.insert = function (req, res) {
   var like = new Like({
     story: req.params.storyId,
     vote: req.params.vote - 1,
+    user: req.user._id
   })
   console.log("received: " + like)
   like.save(function (err, like) {
@@ -21,10 +22,14 @@ exports.insert = function (req, res) {
       utils.render(req, res, "friendly-error", 200, err, like, {})
       return
     }
-    Story.findByIdAndUpdate(like.story, { $push: { likes: like } }, function (
+    Story.findByIdAndUpdate(like.story, { $push: { likes: like } }, { new:true }, function (
       err,
       _story
     ) {
+      if (err) {
+        console.log(err)
+      }
+      console.log(_story)
       utils.render(req, res, "friendly-error", 200, err, like, {})
     })
   })
